@@ -57,6 +57,17 @@ function letterToGlyph(letterName) {
 function tpTermToGlyph(term) {
   return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${term}.jpg`
 }
+function tpMetaToGlyph(term) {
+  if (term === '[')
+    return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_cartouche.jpg`
+  if (term === '!')
+    return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_cartouche.jpg`
+}
+function tpToGlyph(termObj) {
+  if (termObj.type === 'meta')
+    return tpMetaToGlyph(termObj.lasina)
+  return tpTermToGlyph(termObj.lasina)
+}
 
 function findRootData(root) {
   return ROOTS.find(r => r.code === root)
@@ -79,19 +90,16 @@ const IndexPage = (props) => {
     () => props.data.allDictCsv.edges.reduce(reduceIt, {terms:[], rootsSet:new Set()}),
     [props.data.allDictCsv.edges]
   )
-  global.console.log('data.terms',data.terms)
   const sortedRoots = React.useMemo(() => [...data.rootsSet].sort(sortRoots), [data.rootsSet])
   const [selectedRoots, setSelectedRoots] = React.useState([])
   const terms = React.useMemo(
     () => {
-      global.console.log('terms memo...')
       if (!selectedRoots.length)
         return data.terms
       return data.terms.filter(termObj => termObj.roots.join(',').includes(selectedRoots.join(',')))
     },
     [data.terms, selectedRoots]
   )
-  global.console.log('terms', terms)
 
   return <>
     <main>
@@ -107,9 +115,9 @@ const IndexPage = (props) => {
       <p>Selected: {selectedRoots.join(', ')} ... <button onClick={() => setSelectedRoots([])}>clear</button></p>
       <p>(TODO) Click a glyph to see the definition...</p>
       <ul className="glyphs">
-        {terms?.map?.(termData =>
+        {terms.map?.(termData => // TODO fix the punctuation/etc
           <li key={`glyph-${termData.lasina}`} className={`glyphs__glyph-${termData.lasina}`}>
-            <button><img src={tpTermToGlyph(termData.lasina)} /></button>
+            <button><img src={tpToGlyph(termData)} /></button>
           </li>
         )}
       </ul>
