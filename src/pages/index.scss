@@ -1,0 +1,23 @@
+ul {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  list-style: none;
+  margin: 1em auto;
+  padding: 0;
+
+}
+
+.roots {
+  // .roots__root-phoneme { background: pink; }
+  // .roots__root-shape { background: khaki; }
+  // .roots__root-meta { background: gray; }
+  button {
+    display: block;
+    width: 2em;
+    height: 2em;
+    font-size: 1.75em;
+    background: transparent;
+    img { width: 100%; }
+  }
+}
