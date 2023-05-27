@@ -1,11 +1,7 @@
-* [x] root-based lookup method
-  * [x] button for each root sigil; click one and it filters all glyphs with the root (ones w/it as primary first)
-
 * pronunciation-based lookup method
   * click SS letters which spell a word and filter glyphs acc'd'ly
 
-* glyph's definition entry
-  * pronunciation using SS
-  * definition using SP?
-
-* ...may want to add 'tertiary roots' for more listings? alternate readings?
+* jan pi pona tawa mi
+  * used in this tool
+    * the _sitelen sitelen_ glyphs on this page are Sumpygump's [ported SVGs](https://sumpygump.github.io/sitelen-sitelen/) of jan Same's [glyph vectors](http://musilili.net/sitelen-sitelen-remastered/)
+  * the _sitelen pona_ glyphs on this page are Jack Humbert's [_sitelen pona pona_ font]

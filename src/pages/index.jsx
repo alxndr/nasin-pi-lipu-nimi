@@ -1,119 +1,70 @@
 import * as React from 'react'
 import {graphql} from 'gatsby'
 
+import Analytics from '../components/analytics'
+import {findRootData, sortTermsByRoots, rootCodeToVisual, rootToRootType, sortRoots} from '../helpers/roots'
+import {tpToGlyph} from '../helpers/glyphs'
 import './index.scss'
 
-const ROOTS = [
-  {code: 'U' , type: 'phoneme' , name: 'u'      , },
-  {code: 'O' , type: 'phoneme' , name: 'o'      , },
-  {code: 'A' , type: 'phoneme' , name: 'a'      , },
-  {code: 'E' , type: 'phoneme' , name: 'e'      , },
-  {code: 'I' , type: 'phoneme' , name: 'i'      , },
-  {code: 'J' , type: 'phoneme' , name: 'j'      , },
-  {code: 'P' , type: 'phoneme' , name: 'p'      , },
-  {code: 'T' , type: 'phoneme' , name: 't'      , },
-  {code: 'K' , type: 'phoneme' , name: 'k'      , },
-  {code: 'M' , type: 'phoneme' , name: 'm'      , },
-  {code: 'W' , type: 'phoneme' , name: 'w'      , },
-  {code: 'N' , type: 'phoneme' , name: 'n'      , },
-  {code: 'L' , type: 'phoneme' , name: 'l'      , },
-  {code: 'S' , type: 'phoneme' , name: 's'      , },
-  {code: '~' , type:   'shape' , name: 'linja'  , },
-  {code: 'ᴤ' , type:   'shape' , name: 'seme'   , },
-  {code:'＝' , type:   'shape' , name: 'sama'   , },
-  {code: '⊹' , type:   'shape' , name: 'weka'   , },
-  {code: '⩍' , type:   'shape' , name: 'nena'   , },
-  {code: '□' , type:   'shape' , name: 'leko'   , },
-  {code: '⊿' , type:   'shape' , name: 'monsuta', },
-  {code: '◎' , type:   'shape' , name: 'lupa'   , },
-  {code: '☻' , type:   'shape' , name: 'uta'    , },
-  {code: '☞' , type:   'shape' , name: 'luka'   , },
-  {code: '[' , type:   'meta'  , name: 'poki'   , },
-  {code: '_' , type:   'meta'  , name: 'anpa'   , },
-]
-const STRING_SORT_ORDER = ROOTS.map(r => r.code)
-function sortRoots(a, b) {
-  if (!STRING_SORT_ORDER.includes(a)) throw new Error(`sortRoots first param not a root: ${a}`)
-  if (!STRING_SORT_ORDER.includes(b)) throw new Error(`sortRoots second param not a root: ${b}`)
-  return STRING_SORT_ORDER.indexOf(a) - STRING_SORT_ORDER.indexOf(b)
-}
+const ROOTS_COLUMN_NAME = 'wanpiSS' // gonna change this at some point ... don't forget the one in the graphQL query
+
+/* reducer function for initial ETL of roots data from CSV
+ *  — accumulator param is object with props `terms` and `roots`
+ *  — element param is GraphQL-output `edge` object with prop `node`
+ * ...must always return accumulator in reducer functions
+ */
 function reduceIt(acc, edge) {
-  const rootsString = edge.node.wanpiSS
-  if (!rootsString.length) return acc
+  const rootsString = edge.node[ROOTS_COLUMN_NAME]
+  if (!rootsString.length) return console.log('!rootsString:',edge.node)|| acc
   const roots = rootsString.split(/\s+/)
-  if (!roots.length) return acc
-  const term = {
-    lasina: edge.node.tokipona,
-    roots,
-  }
-  acc.terms.push(term)
   roots.forEach(root => acc.rootsSet.add(root))
+  acc.terms.push({ lasina: edge.node.tokipona, roots, })
   return acc
 }
 
-function letterToGlyph(letterName) {
-  return `https://jonathangabel.com/images/t47_tokipona/kalalili/t47_kalalili_x${letterName}.jpg`
-}
-function tpTermToGlyph(term) {
-  return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${term}.jpg`
-}
-function tpMetaToGlyph(term) {
-  if (term === '[')
-    return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_cartouche.jpg`
-  if (term === '!')
-    return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_cartouche.jpg`
-}
-function tpToGlyph(termObj) {
-  if (termObj.type === 'meta')
-    return tpMetaToGlyph(termObj.lasina)
-  return tpTermToGlyph(termObj.lasina)
-}
-
-function findRootData(root) {
-  return ROOTS.find(r => r.code === root)
-}
-function rootToName(root) {
-  return findRootData(root).name
-}
-function rootToImage(root) {
-  const rootData = findRootData(root)
-  if (rootData.type === 'phoneme')
-    return <img src={letterToGlyph(rootData.name)} />
-  return rootData.code
-}
-function rootToRootType(root) {
-  return findRootData(root).type
-}
-
 const IndexPage = (props) => {
-  const data = React.useMemo( // {terms, rootsSet}
-    () => props.data.allDictCsv.edges.reduce(reduceIt, {terms:[], rootsSet:new Set()}),
+  const data = React.useMemo(
+    () => {
+      const {terms, rootsSet} = props.data.allDictCsv.edges.reduce(reduceIt, {terms:[], rootsSet:new Set() })
+      const termsSorted = terms.sort(sortTermsByRoots)
+      console.assert(rootsSet.length === 26, 'rootsSet length should be 26')
+      const rootsSorted = [...rootsSet].sort(sortRoots)
+      return {termsSorted, rootsSorted}
+    },
     [props.data.allDictCsv.edges]
   )
-  const sortedRoots = React.useMemo(() => [...data.rootsSet].sort(sortRoots), [data.rootsSet])
   const [selectedRoots, setSelectedRoots] = React.useState([])
   const terms = React.useMemo(
     () => {
       if (!selectedRoots.length)
-        return data.terms
-      return data.terms.filter(termObj => termObj.roots.join(',').includes(selectedRoots.join(',')))
+        return data.termsSorted
+      return data.termsSorted.filter(termObj => termObj.roots.join(',').includes(selectedRoots.join(',')))
     },
-    [data.terms, selectedRoots]
+    [data.termsSorted, selectedRoots]
   )
+  console.assert(data.rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
   return <>
-    <main>
+    <main className={selectedRoots.length > 3 ? 'error' : ''}>
+
+      <p className="help">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html" target="_blank">read a blog post about it</a></p>
+
       <h1>nasin pi lipu nimi</h1>
-      <p>To identify a glyph, first select a root:</p>
+
+      <p>To identify a glyph, first select a root:
+        <span className="help">(<a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html#roots" target="_blank">what kind of order is this??</a>)</span>
+        TODO Where did S go??
+      </p>
       <ul className="roots">
-        {sortedRoots.map(root =>
+        {data.rootsSorted.map(root =>
           <li key={`root-${root}`} className={`roots__root-${rootToRootType(root)}`}>
-            <button onClick={() => setSelectedRoots([...selectedRoots, root])}>{rootToImage(root)}</button>
+            <button onClick={() => setSelectedRoots([...selectedRoots, root])}>
+              {rootCodeToVisual(root)}
+            </button>
           </li>
         )}
       </ul>
-      <p>Selected: {selectedRoots.join(', ')} ... <button onClick={() => setSelectedRoots([])}>clear</button></p>
-      <p>(TODO) Click a glyph to see the definition...</p>
+      <p>Selected: TODO change to glyphs... {selectedRoots.join(', ')} ... <button onClick={() => setSelectedRoots([])}>clear</button></p>
       <ul className="glyphs">
         {terms.map?.(termData => // TODO fix the punctuation/etc
           <li key={`glyph-${termData.lasina}`} className={`glyphs__glyph-${termData.lasina}`}>
@@ -121,10 +72,14 @@ const IndexPage = (props) => {
           </li>
         )}
       </ul>
+
     </main>
+
     <footer>
       <p><a href="https://github.com/alxndr/nasin-pi-lipu-nimi">code</a></p>
     </footer>
+
+    <Analytics/>
   </>
 }
 
