@@ -76,7 +76,7 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
         </ul>
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
-            ? <p>select a root above to see all glyphs below which contain it; then select a glyph below to see its pronunciation and definition</p>
+            ? <p>select a root above to see all glyphs below which contain it; and/or select a glyph below to see its pronunciation and definition</p>
             : <>
               <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
               <ul>
@@ -115,7 +115,7 @@ export const Head = () => <>
     type="text/javascript"
     src="http://livingtokipona.smoishele.com/dist/sitelen-sitelen-renderer.min.js"
   ></script>
-  <title>sitelen sitelen la, nasin pi lipu nimi</title>
+  <title>sitelen sitelen la, nasin pi lipu nimi. jan Lesate li pali e ni</title>
 </>
 
 export const IndexQuery = graphql`

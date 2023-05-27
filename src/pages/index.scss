@@ -62,6 +62,7 @@ ul.rootpicker__roots {
 
 .rootpicker__selection {
   display: flex;
+  max-width: 25rem;
   height: 4rem;
   border-radius: 1em;
   padding: 0.5em 1em;
