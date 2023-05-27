@@ -11,10 +11,13 @@ import {
   rootsInOrder,
   sortTermsByRoots,
 } from '../helpers/roots'
-import {isGlyphAPlynth, tpToGlyph} from '../helpers/glyphs'
+import {lasinaToGlyph} from '../helpers/glyphs'
 import './index.scss'
 
 const ROOTS_COLUMN_NAME = 'wanpiSS' // gonna change this at some point ... don't forget the one in the graphQL query
+
+const rootsSorted = rootsInOrder()
+console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
 /* reducer function for initial ETL of roots data from CSV
  *  — accumulator param is allDefinedGlyphs
@@ -39,7 +42,6 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
   const [selectedRoots, setSelectedRoots] = React.useState([]) // these should use the full objects from the roots helper...
   const selection = React.useMemo(
     () => {
-      global.console.log('selection...', selectedRoots, allDefinedGlyphs)
       if (!selectedRoots.length)
         return allDefinedGlyphs
       const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => '\\'+code).join('.*'))
@@ -56,15 +58,13 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
       window.location.pathname + window.location.search
     )
   }, [selectedRoots]);
-  const rootsSorted = rootsInOrder()
-  console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
   return <>
     <main>
 
       <p className="help" style={{float:'right'}}>Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
 
-      <h1>nasin pi lipu nimi</h1>
+      <h1 data-sitelen>nasin pi lipu nimi</h1>
 
       <div className="rootpicker">
         <ul className="rootpicker__roots">
@@ -93,7 +93,7 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
       <ul className="glyphs">
         {selection?.map?.(termData =>
           <li className={`glyphs__glyph-${termData.lasina}`} key={`glyph-${termData.lasina}`}>
-            <img src={tpToGlyph(termData)} alt={`sitelen pi nimi "${termData.lasina}"`} />
+            <img src={lasinaToGlyph(termData)} alt={`sitelen pi nimi "${termData.lasina}"`} />
           </li>
         )}
       </ul>
@@ -110,7 +110,13 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
 
 export default IndexPage
 
-export const Head = () => <title>Home Page</title>
+export const Head = () => <>
+  <script
+    type="text/javascript"
+    src="http://livingtokipona.smoishele.com/dist/sitelen-sitelen-renderer.min.js"
+  ></script>
+  <title>sitelen sitelen la, nasin pi lipu nimi</title>
+</>
 
 export const IndexQuery = graphql`
   query {

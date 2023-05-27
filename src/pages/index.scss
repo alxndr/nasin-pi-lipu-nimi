@@ -1,13 +1,11 @@
+@import url('http://livingtokipona.smoishele.com/styles/sitelen-sitelen-renderer.css');
+
 @font-face { 
   font-family: 'sitelen pona pona';
   src: url('https://jackhumbert.github.io/sitelen-pona-pona/fonts/sitelen-pona-pona.otf');
   font-weight: 400;
   text-rendering: optimizeLegibility;
   font-feature-settings: "liga" 1;
-}
-@font-face { 
-  font-family: 'linja sike';
-  src: url('https://wyub.github.io/tokipona/linja-sike-5.otf');
 }
 
 .help {
@@ -20,6 +18,9 @@
 .error {
   background: pink;
   border: 2px dashed red;
+}
+
+h1 {
 }
 
 ul {
@@ -73,6 +74,9 @@ ul.rootpicker__roots {
     width: 4rem;
     height: auto;
     text-align: center;
+    cursor: default;
+  }
+  button {
     cursor: pointer;
   }
   p {

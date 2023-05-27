@@ -1,23 +1,7 @@
-export function isGlyphAPlynth(lasina) {
-  switch (lasina) {
-    case '.':
-    case '(quote)':
-    case '(question)':
-    case '(name)':
-    case '!':
-    case ',':
-    case ':':
-    case 'la':
-    case 'mute':
-      return true
-    default:
-      return false
-  }
+export function letterToGlyph(phonemeName) {
+  return `https://jonathangabel.com/images/t47_tokipona/kalalili/t47_kalalili_x${phonemeName}.jpg`
 }
 
-export function letterToGlyph(letterName) {
-  return `https://jonathangabel.com/images/t47_tokipona/kalalili/t47_kalalili_x${letterName}.jpg`
-}
 function tpTermToGlyph(term) {
   switch (term) {
     case 'kokosila':
@@ -29,7 +13,7 @@ function tpTermToGlyph(term) {
     case 'kijetesantakalu':
     case 'lanpan':
     case 'leko':
-    case 'misikele':
+    case 'misekeke':
     case 'monsuta':
     case 'n':
     case 'soko':
@@ -39,7 +23,8 @@ function tpTermToGlyph(term) {
       return `https://sumpygump.github.io/sitelen-sitelen/word-glyphs/${term}.svg`;
   }
 }
-export function tpToGlyph({lasina}) {
+
+export function lasinaToGlyph({lasina}) {
   switch (lasina) {
     case '.'          : return 'https://sumpygump.github.io/sitelen-sitelen/containers/point-single.svg'
     case '(quote)'    : return 'https://sumpygump.github.io/sitelen-sitelen/containers/cartouche-square.svg'
