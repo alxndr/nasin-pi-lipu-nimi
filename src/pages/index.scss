@@ -1,5 +1,3 @@
-@import url('http://livingtokipona.smoishele.com/styles/sitelen-sitelen-renderer.css');
-
 @font-face { 
   font-family: 'sitelen pona pona';
   src: url('https://jackhumbert.github.io/sitelen-pona-pona/fonts/sitelen-pona-pona.otf');
@@ -8,11 +6,19 @@
   font-feature-settings: "liga" 1;
 }
 
+body {
+  margin: 0;
+}
+
 .help {
   margin: 1em;
   border: 1px dotted #667;
   padding: 0.3em 1em;
   background: #eef;
+
+  &-toplevel {
+    float: right; // 😕
+  }
 }
 
 .error {
@@ -47,14 +53,17 @@ ul {
 ul.rootpicker__roots {
   li {
     margin: 0.2rem;
-    border-radius: 1rem;
     &:hover {
       cursor: pointer;
       box-shadow: 0.1rem 0.1rem 0.5rem #55111199;
     }
   }
+  li,
+  img {
+    border-radius: 33%;
+  }
 }
-.rootpicker__roots__root-phoneme* {}
+// .rootpicker__roots__root-phoneme* {}
 .rootpicker__roots__root-shape,
 .rootpicker__roots__root-meta {
   line-height: 5rem;
@@ -62,6 +71,7 @@ ul.rootpicker__roots {
 
 .rootpicker__selection {
   display: flex;
+  align-items: center;
   max-width: 25rem;
   height: 4rem;
   border-radius: 1em;
@@ -95,17 +105,31 @@ ul.rootpicker__roots {
 
 .glyphs {
   li {
-    margin: 0.1em;
+    margin: 0.2rem;
     line-height: 6rem;
     cursor: pointer;
     &:hover {
-      box-shadow: 0.1em 0.1em 0.5em #66996699;
+      background: pink;
     }
   }
 }
 
+footer {
+  margin: 5rem 0 0;
+  padding-top: 2rem;
+  background: darkgray;
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+
+  a {
+    color: aliceblue;
+    text-decoration: underline;
+  }
+}
+
 .spp {
-  font: 3em/100% 'sitelen pona pona';
+  font: 3em/100% 'sitelen pona pona' !important; // !i needed bc of sitelen-sitelen-renderer ??
 }
 .juniko {
   font-size: 2em;

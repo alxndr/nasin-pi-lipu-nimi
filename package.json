@@ -9,7 +9,7 @@
   },
   "scripts": {
     "predata:fetch": "echo fetching fresh definition data…",
-    "data:fetch": "curl -so - https://linku.la/jasima/data.json | jq '[.data[] | {word, sitelen_emosi, sitelen_sitelen, def: .def.en}]' >src/data/nimi-ale.json",
+    "data:fetch": "curl -so - https://linku.la/jasima/data.json | jq '[.data[] | {word, sitelen_emosi, sitelen_sitelen, def: .def.en}]' >src/data/definitions.json",
     "predevelop": "npm run data:fetch",
     "develop": "gatsby develop",
     "start": "gatsby develop",
@@ -28,6 +28,7 @@
     "gatsby-transformer-remark": "6.10.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-responsive-modal": "^6.4.1",
     "sass": "1.62.1"
   }
 }

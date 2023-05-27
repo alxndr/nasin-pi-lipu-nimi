@@ -1,0 +1,13 @@
+.entry {
+  display: flex;
+  flex-flow: row wrap;
+
+  h2 {
+    flex-grow: 3;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .entry__definition {
+    flex-basis: 100%;
+  }
+}

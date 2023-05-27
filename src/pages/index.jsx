@@ -1,8 +1,11 @@
 import * as React from 'react'
 import {graphql} from 'gatsby'
+import {Modal} from 'react-responsive-modal'
 import cn from 'classnames'
 
 import Analytics from '../components/analytics'
+import Entry from '../components/entry'
+
 import {
   isSelectedRootsValid,
   rootCodeToVisual,
@@ -12,40 +15,39 @@ import {
   sortTermsByRoots,
 } from '../helpers/roots'
 import {lasinaToGlyph} from '../helpers/glyphs'
+
+import 'react-responsive-modal/styles.css'
 import './index.scss'
 
-const ROOTS_COLUMN_NAME = 'wanpiSS' // gonna change this at some point ... don't forget the one in the graphQL query
+const ROOTS_COLUMN_NAME = 'wanpiSS' // TODO change this at... don't forget the one in the graphQL query
 
 const rootsSorted = rootsInOrder()
 console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
-/* reducer function for initial ETL of roots data from CSV
- *  — accumulator param is allDefinedGlyphs
- *  — element param is GraphQL-output `edge` object with prop `node`
- * ...must always return accumulator in reducer functions
- */
-function reduceIt(acc, edge) {
-  const rootsString = edge.node[ROOTS_COLUMN_NAME]
-  if (!rootsString.length) return acc
-  const roots = rootsString.split(/\s+/)
-  acc.push({ lasina: edge.node.tokipona, roots, })
-  return acc
-}
-
-const IndexPage = ({data: {allDictCsv: {edges}, allNimiAleJson: {edges: nimiAle}}}) => {
-  global.console.log({nimiAle})
-  console.assert(edges.length > 100, 'we should have at least a hundo edges here')
+const IndexPage = ({data: {allDictCsv: {edges: glyphEdges}, allDefinitionsJson: {edges: definitionEdges}}}) => {
+  console.assert(glyphEdges.length > 100, 'we should have at least a hundo glyphs here')
+  console.assert(definitionEdges.length > 250, 'should have couple hundred definitions')
+  const allDefinitions = React.useMemo(
+    () => definitionEdges.map(({node}) => node),
+    [definitionEdges]
+  )
   const allDefinedGlyphs = React.useMemo(
-    () => edges.reduce(reduceIt, []).sort(sortTermsByRoots),
-    [edges]
+    () => glyphEdges.reduce((glyphsAccumulator, edge) => {
+      const rootsString = edge.node[ROOTS_COLUMN_NAME]
+      if (!rootsString.length) return glyphsAccumulator
+      const roots = rootsString.split(/\s+/)
+      glyphsAccumulator.push({ lasina: edge.node.tokipona, roots, })
+      return glyphsAccumulator
+    }, []).sort(sortTermsByRoots),
+    [glyphEdges]
   )
   console.assert(allDefinedGlyphs.length > 100, 'we should have at least a hundo glyphs here')
   const [selectedRoots, setSelectedRoots] = React.useState([]) // these should use the full objects from the roots helper...
   const filteredGlyphs = React.useMemo(
     () => {
-      if (!selectedRoots.length)
-        return allDefinedGlyphs
-      const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => '\\'+code).join('.*'))
+      if (!selectedRoots.length) return allDefinedGlyphs
+      // TODO replace this implementation with something that'll find the roots in any order...
+      const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => '\\'+code).join('.*')) // escaping-backslash needed for the [ char 🫤
       return allDefinedGlyphs.filter(glyphObj => REGEX_SELECTED_ROOTS.test(glyphObj.roots.join('')))
     },
     [allDefinedGlyphs, selectedRoots]
@@ -60,21 +62,27 @@ const IndexPage = ({data: {allDictCsv: {edges}, allNimiAleJson: {edges: nimiAle}
     )
   }, [selectedRoots]);
   const [selectedGlyph, setSelectedGlyph] = React.useState(null)
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const selectedDefinition = React.useMemo(
+    () => {
+      return allDefinitions.find((defEdge => defEdge.word === selectedGlyph?.lasina))
+    },
+    [definitionEdges, selectedGlyph]
+  )
 
+
+  React.useEffect(() => console.log({selectedDefinition}), [selectedDefinition])
+  React.useEffect(() => console.log({selectedGlyph}), [selectedGlyph])
   return <>
     <main>
 
-      <p className="help" style={{float:'right'}}>Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
+      <p className="help help-toplevel">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
 
-      <h1 _data-sitelen>nasin pi lipu nimi</h1>
+      <h1 data-sitelen>nasin pi lipu nimi</h1> {/* TODO fix rendering */}
 
-      {selectedGlyph && 
-        <div className="modal">
-          <button onClick={() => setSelectedGlyph(null)}>x</button>
-          {lasinaToGlyph(selectedGlyph.lasina)}
-          <h2>selectedGlyph.lasina</h2>
-        </div>
-      }
+      <Modal open={!!selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
+        <Entry lasina={selectedGlyph?.lasina} data={selectedDefinition} />
+      </Modal>
 
       <div className="rootpicker">
         <ul className="rootpicker__roots">
@@ -86,7 +94,7 @@ const IndexPage = ({data: {allDictCsv: {edges}, allNimiAleJson: {edges: nimiAle}
         </ul>
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
-            ? <p>select a root above to see all glyphs below which contain it; and/or select a glyph below to see its pronunciation and definition</p>
+            ? <p>select one or more roots above to see all glyphs below which contain it; and/or select a glyph below to see its pronunciation and definition</p>
             : <>
               <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
               <ul>
@@ -109,7 +117,7 @@ const IndexPage = ({data: {allDictCsv: {edges}, allNimiAleJson: {edges: nimiAle}
     </main>
 
     <footer>
-      <p><a href="https://github.com/alxndr/nasin-pi-lipu-nimi">code</a></p>
+      <p><a href="https://github.com/alxndr/nasin-pi-lipu-nimi">code on GitHub</a></p>
     </footer>
 
     <Analytics/>
@@ -119,11 +127,15 @@ const IndexPage = ({data: {allDictCsv: {edges}, allNimiAleJson: {edges: nimiAle}
 export default IndexPage
 
 export const Head = () => <>
+  <title>nasin sitelen pi lipu nimi</title>
+  <link
+    rel="stylesheet"
+    href="http://livingtokipona.smoishele.com/styles/sitelen-sitelen-renderer.css"
+  />
   <script
     type="text/javascript"
     src="http://livingtokipona.smoishele.com/dist/sitelen-sitelen-renderer.min.js"
   ></script>
-  <title>sitelen sitelen la, nasin pi lipu nimi. jan Lesate li pali e ni</title>
 </>
 
 export const IndexQuery = graphql`
@@ -136,7 +148,7 @@ export const IndexQuery = graphql`
         }
       }
     }
-    allNimiAleJson {
+    allDefinitionsJson {
       edges {
         node {
           sitelen_sitelen
