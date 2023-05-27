@@ -39,6 +39,15 @@ export function rootsInOrder() {
   return [...ROOTS];
 }
 
+/* param: array
+ * returns: boolean
+ */
+export function isSelectedRootsValid(selectedRoots) {
+  if (!selectedRoots?.length) return true
+  if (selectedRoots.length > 3) return false
+  return true
+}
+
 export function findRootData(root) {
   const result = ROOTS.find(r => r.code === root)
   if (!result) {
@@ -47,10 +56,13 @@ export function findRootData(root) {
   return result
 }
 
-export function rootCodeToVisual(root) {
-  const rootData = findRootData(root)
+export function rootDataToVisual(rootData) {
   return rootData.component || <img src={letterToGlyph(rootData.name)} alt={`sitelen pi nimi ${rootData.name}`} />
 }
+export function rootCodeToVisual(rootCode) {
+  return rootDataToVisual(findRootData(rootCode))
+}
+
 export function rootToRootType(root) {
   return findRootData(root).type
 }
@@ -81,4 +93,3 @@ export function sortTermsByRoots(termObjA, termObjB) {
          (!rootA3 && 1) || (!rootB3 && -1) || sortRoots(rootA3, rootB3) ||
          0
 }
-

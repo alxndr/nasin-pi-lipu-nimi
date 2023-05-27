@@ -1,3 +1,20 @@
+export function isGlyphAPlynth(lasina) {
+  switch (lasina) {
+    case '.':
+    case '(quote)':
+    case '(question)':
+    case '(name)':
+    case '!':
+    case ',':
+    case ':':
+    case 'la':
+    case 'mute':
+      return true
+    default:
+      return false
+  }
+}
+
 export function letterToGlyph(letterName) {
   return `https://jonathangabel.com/images/t47_tokipona/kalalili/t47_kalalili_x${letterName}.jpg`
 }
@@ -32,3 +49,4 @@ export function tpToGlyph({lasina}) {
     default           : return tpTermToGlyph(lasina)
   }
 }
+

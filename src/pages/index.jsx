@@ -4,18 +4,20 @@ import cn from 'classnames'
 
 import Analytics from '../components/analytics'
 import {
+  isSelectedRootsValid,
   rootCodeToVisual,
+  rootDataToVisual,
   rootToRootType,
   rootsInOrder,
   sortTermsByRoots,
 } from '../helpers/roots'
-import {tpToGlyph} from '../helpers/glyphs'
+import {isGlyphAPlynth, tpToGlyph} from '../helpers/glyphs'
 import './index.scss'
 
 const ROOTS_COLUMN_NAME = 'wanpiSS' // gonna change this at some point ... don't forget the one in the graphQL query
 
 /* reducer function for initial ETL of roots data from CSV
- *  — accumulator param is terms
+ *  — accumulator param is allDefinedGlyphs
  *  — element param is GraphQL-output `edge` object with prop `node`
  * ...must always return accumulator in reducer functions
  */
@@ -27,46 +29,28 @@ function reduceIt(acc, edge) {
   return acc
 }
 
-function isGlyphAPlynth(lasina) { // TODO this isn't the right place nor implementation...
-  switch (lasina) {
-    case '.':
-    case '(quote)':
-    case '(question)':
-    case '(name)':
-    case '!':
-    case ',':
-    case ':':
-    case 'la':
-    case 'mute':
-      return true
-    default:
-      return false
-  }
-}
-
-function isSelectedRootsValid(selectedRoots) {
-  if (!selectedRoots?.length) return true
-  if (selectedRoots.length > 3) return false
-  return true
-}
-
 const IndexPage = ({data: {allDictCsv: {edges}}}) => {
-  const terms = React.useMemo(
+  const allDefinedGlyphs = React.useMemo(
     () => edges.reduce(reduceIt, []).sort(sortTermsByRoots),
     [edges]
   )
-  const [selectedRoots, setSelectedRoots] = React.useState([])
+  const [selectedRoots, setSelectedRoots] = React.useState([]) // these should use the full objects from the roots helper...
   const selection = React.useMemo(
     () => {
+      global.console.log('selection...', selectedRoots, allDefinedGlyphs)
       if (!selectedRoots.length)
-        return terms
-      return terms.filter(termObj => termObj.roots.join(',').includes(selectedRoots.join(',')))
+        return allDefinedGlyphs
+      return allDefinedGlyphs.filter(termObj =>
+        global.console.log('hmmmm',termObj.roots,selectedRoots.map(rO=>rO.code))||
+        // selectedRoots.reduce((boolVal, selectedRootObj) => {}, false)
+        termObj.roots.join(',').includes(selectedRoots.map(rO=>rO.code).join(','))
+      )
     },
-    [terms, selectedRoots]
+    [allDefinedGlyphs, selectedRoots]
   )
   React.useEffect(() => {
     window.location.hash = isSelectedRootsValid(selectedRoots)
-      ? selectedRoots.join(':')
+      ? selectedRoots.map(rootObj => rootObj.name).join('+')
       : ''
   }, [selectedRoots]);
   const rootsSorted = rootsInOrder()
@@ -86,18 +70,17 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
         <ul className="rootpicker__roots">
           {rootsSorted.map(rootObj =>
             <li key={`root-${rootObj.name}`} className={`roots__root-${rootToRootType(rootObj.code)} roots__root-${rootObj.name}`}>
-              <button onClick={() => setSelectedRoots([...selectedRoots, rootObj.name])}>
+              <button onClick={() => setSelectedRoots([...selectedRoots, rootObj])}>
                 {rootCodeToVisual(rootObj.code)}
               </button>
             </li>
           )}
         </ul>
         <p className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
-          TODO change to glyphs...
           <ul>
-            {selectedRoots.map(r => <li key={r}>{r}</li>)}
+            {selectedRoots.map(rootObj => <li key={rootObj.name}>{rootDataToVisual(rootObj)}</li>)}
+            <li><button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button></li>
           </ul>
-          <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button>
           <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
         </p>
       </div>
