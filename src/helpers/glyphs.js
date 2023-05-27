@@ -33,6 +33,8 @@ function tpTermToGlyph(term) {
     case 'n':
       return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${term}.jpg`
     case 'misikele': // TODO
+    case 'soko':     // TODO
+    case 'tonsi':    // TODO
     default:
       return `https://sumpygump.github.io/sitelen-sitelen/word-glyphs/${term}.svg`;
   }

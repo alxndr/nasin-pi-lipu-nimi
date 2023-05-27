@@ -30,21 +30,20 @@ function reduceIt(acc, edge) {
 }
 
 const IndexPage = ({data: {allDictCsv: {edges}}}) => {
+  console.assert(edges.length > 100, 'we should have at least a hundo edges here')
   const allDefinedGlyphs = React.useMemo(
     () => edges.reduce(reduceIt, []).sort(sortTermsByRoots),
     [edges]
   )
+  console.assert(allDefinedGlyphs.length > 100, 'we should have at least a hundo glyphs here')
   const [selectedRoots, setSelectedRoots] = React.useState([]) // these should use the full objects from the roots helper...
   const selection = React.useMemo(
     () => {
       global.console.log('selection...', selectedRoots, allDefinedGlyphs)
       if (!selectedRoots.length)
         return allDefinedGlyphs
-      return allDefinedGlyphs.filter(termObj =>
-        global.console.log('hmmmm',termObj.roots,selectedRoots.map(rO=>rO.code))||
-        // selectedRoots.reduce((boolVal, selectedRootObj) => {}, false)
-        termObj.roots.join(',').includes(selectedRoots.map(rO=>rO.code).join(','))
-      )
+      const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => code).join('.*'))
+      return allDefinedGlyphs.filter(glyphObj => REGEX_SELECTED_ROOTS.test(glyphObj.roots.join('')))
     },
     [allDefinedGlyphs, selectedRoots]
   )
@@ -59,36 +58,38 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
   return <>
     <main>
 
-      <p className="help">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html" target="_blank" rel="noreferrer">read a blog post about it</a></p>
+      <p className="help">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
 
       <h1>nasin pi lipu nimi</h1>
 
       <div className="rootpicker">
-        <p>To identify a glyph, first select a root:
-          <span className="help">(<a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html#roots" target="_blank" rel="noreferrer">what kind of order is this??</a>)</span>
-        </p>
         <ul className="rootpicker__roots">
           {rootsSorted.map(rootObj =>
-            <li key={`root-${rootObj.name}`} className={`roots__root-${rootToRootType(rootObj.code)} roots__root-${rootObj.name}`}>
-              <button onClick={() => setSelectedRoots([...selectedRoots, rootObj])}>
-                {rootCodeToVisual(rootObj.code)}
-              </button>
+            <li onClick={() => setSelectedRoots([...selectedRoots, rootObj])} key={`root-${rootObj.name}`} className={`rootpicker__roots__root-${rootToRootType(rootObj.code)} roots__root-${rootObj.name}`}>
+              {rootCodeToVisual(rootObj.code)}
             </li>
           )}
         </ul>
-        <p className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
-          <ul>
-            {selectedRoots.map(rootObj => <li key={rootObj.name}>{rootDataToVisual(rootObj)}</li>)}
-            <li><button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button></li>
-          </ul>
-          <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
-        </p>
+        <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
+          {selectedRoots.length === 0
+            ? <p>select a root above to see all glyphs below which contain it</p>
+            : <>
+              <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
+              <ul>
+                {selectedRoots.map(rootObj => <li key={rootObj.name}>{rootDataToVisual(rootObj)}</li>)}
+                {selectedRoots.length > 0 && 
+                  <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button>
+                }
+              </ul>
+            </>
+          }
+        </div>
       </div>
       
       <ul className="glyphs">
         {selection?.map?.(termData =>
-          <li key={`glyph-${termData.lasina}`} className={`glyphs__glyph-${termData.lasina}`}>
-            <button className={cn({plinth: isGlyphAPlynth(termData.lasina)})}><img src={tpToGlyph(termData)} alt={`sitelen pi nimi "${termData.lasina}"`} /></button>
+          <li className={`glyphs__glyph-${termData.lasina}`} key={`glyph-${termData.lasina}`}>
+            <img src={tpToGlyph(termData)} alt={`sitelen pi nimi "${termData.lasina}"`} />
           </li>
         )}
       </ul>
