@@ -8,6 +8,9 @@
     "node": ">=20.2.0"
   },
   "scripts": {
+    "predata:fetch": "echo fetching fresh definition data…",
+    "data:fetch": "curl -so - https://linku.la/jasima/data.json | jq '[.data[] | {word, sitelen_emosi, sitelen_sitelen, def: .def.en}]' >src/data/nimi-ale.json",
+    "predevelop": "npm run data:fetch",
     "develop": "gatsby develop",
     "start": "gatsby develop",
     "build": "gatsby build",
@@ -15,12 +18,13 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "classnames": "^2.3.2",
+    "classnames": "2.3.2",
     "gatsby": "5.10.0",
     "gatsby-plugin-manifest": "5.10.0",
     "gatsby-plugin-sass": "6.10.0",
-    "gatsby-source-filesystem": "^5.10.0",
-    "gatsby-transformer-csv": "^5.10.0",
+    "gatsby-source-filesystem": "5.10.0",
+    "gatsby-transformer-csv": "5.10.0",
+    "gatsby-transformer-json": "5.10.0",
     "gatsby-transformer-remark": "6.10.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -32,7 +32,8 @@ function reduceIt(acc, edge) {
   return acc
 }
 
-const IndexPage = ({data: {allDictCsv: {edges}}}) => {
+const IndexPage = ({data: {allDictCsv: {edges}, allNimiAleJson: {edges: nimiAle}}}) => {
+  global.console.log({nimiAle})
   console.assert(edges.length > 100, 'we should have at least a hundo edges here')
   const allDefinedGlyphs = React.useMemo(
     () => edges.reduce(reduceIt, []).sort(sortTermsByRoots),
@@ -40,7 +41,7 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
   )
   console.assert(allDefinedGlyphs.length > 100, 'we should have at least a hundo glyphs here')
   const [selectedRoots, setSelectedRoots] = React.useState([]) // these should use the full objects from the roots helper...
-  const selection = React.useMemo(
+  const filteredGlyphs = React.useMemo(
     () => {
       if (!selectedRoots.length)
         return allDefinedGlyphs
@@ -58,13 +59,22 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
       window.location.pathname + window.location.search
     )
   }, [selectedRoots]);
+  const [selectedGlyph, setSelectedGlyph] = React.useState(null)
 
   return <>
     <main>
 
       <p className="help" style={{float:'right'}}>Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
 
-      <h1 data-sitelen>nasin pi lipu nimi</h1>
+      <h1 _data-sitelen>nasin pi lipu nimi</h1>
+
+      {selectedGlyph && 
+        <div className="modal">
+          <button onClick={() => setSelectedGlyph(null)}>x</button>
+          {lasinaToGlyph(selectedGlyph.lasina)}
+          <h2>selectedGlyph.lasina</h2>
+        </div>
+      }
 
       <div className="rootpicker">
         <ul className="rootpicker__roots">
@@ -81,19 +91,17 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
               <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
               <ul>
                 {selectedRoots.map(rootObj => <li key={rootObj.name}>{rootDataToVisual(rootObj)}</li>)}
-                {selectedRoots.length > 0 && 
-                  <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button>
-                }
+                {selectedRoots.length > 0 && <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button>}
               </ul>
             </>
           }
         </div>
       </div>
-      
+
       <ul className="glyphs">
-        {selection?.map?.(termData =>
-          <li className={`glyphs__glyph-${termData.lasina}`} key={`glyph-${termData.lasina}`}>
-            <img src={lasinaToGlyph(termData)} alt={`sitelen pi nimi "${termData.lasina}"`} />
+        {filteredGlyphs?.map?.(glyphData =>
+          <li onClick={() => setSelectedGlyph(glyphData)} className={`glyphs__glyph-${glyphData.lasina}`} key={`glyph-${glyphData.lasina}`}>
+            <img src={lasinaToGlyph(glyphData)} alt={`sitelen pi nimi "${glyphData.lasina}"`} />
           </li>
         )}
       </ul>
@@ -125,6 +133,16 @@ export const IndexQuery = graphql`
         node {
           tokipona
           wanpiSS
+        }
+      }
+    }
+    allNimiAleJson {
+      edges {
+        node {
+          sitelen_sitelen
+          word
+          sitelen_emosi
+          def
         }
       }
     }
