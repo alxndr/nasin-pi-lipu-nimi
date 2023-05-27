@@ -24,17 +24,17 @@ function tpTermToGlyph(term) {
       return 'https://jonathangabel.com/images/t47_tokipona/nimi_ku_suli/kokosila_alt1.210815.josan_s.jpg'
     case 'meso':
       return 'https://jonathangabel.com/images/t47_tokipona/nimi_ku_suli/meso.210725.saki2_s.jpg';
-    case 'lanpan':
-    case 'leko':
     case 'epiku':
     case 'jasima':
     case 'kijetesantakalu':
+    case 'lanpan':
+    case 'leko':
+    case 'misikele':
     case 'monsuta':
     case 'n':
+    case 'soko':
+    case 'tonsi':
       return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${term}.jpg`
-    case 'misikele': // TODO
-    case 'soko':     // TODO
-    case 'tonsi':    // TODO
     default:
       return `https://sumpygump.github.io/sitelen-sitelen/word-glyphs/${term}.svg`;
   }
