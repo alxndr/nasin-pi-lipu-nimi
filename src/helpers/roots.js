@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import {letterToGlyph} from './glyphs'
 
+// these `code` chars need to match what's in the csv...
 const ROOTS = [
   {code: 'U' , type: 'phoneme/V' , name: 'u'      },
   {code: 'O' , type: 'phoneme/V' , name: 'o'      },
@@ -30,17 +31,25 @@ const ROOTS = [
   {code: '[' , type:      'meta' , name: 'poki'   , component:    <span class="spp"></span> },
   {code: '_' , type:      'meta' , name: 'anpa'   , component: <span class="juniko">_</span> },
 ]
-console.assert(ROOTS.length == 26)
+console.assert(ROOTS.length === 26)
 
 const STRING_SORT_ORDER_CODES = ROOTS.map(r => r.code)
 
+export function rootsInOrder() {
+  return [...ROOTS];
+}
+
 export function findRootData(root) {
-  return ROOTS.find(r => r.code === root)
+  const result = ROOTS.find(r => r.code === root)
+  if (!result) {
+    throw new Error(`findRootData: unrecognized root code "${root}"`)
+  }
+  return result
 }
 
 export function rootCodeToVisual(root) {
   const rootData = findRootData(root)
-  return rootData.component || <img src={letterToGlyph(rootData.name)} />
+  return rootData.component || <img src={letterToGlyph(rootData.name)} alt={`sitelen pi nimi ${rootData.name}`} />
 }
 export function rootToRootType(root) {
   return findRootData(root).type

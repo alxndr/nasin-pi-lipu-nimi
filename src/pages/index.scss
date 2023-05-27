@@ -10,12 +10,16 @@
   src: url('https://wyub.github.io/tokipona/linja-sike-5.otf');
 }
 
-.spp {
-  font: 3em/100% 'sitelen pona pona';
+.help {
+  margin: 1em;
+  border: 1px dotted #667;
+  padding: 0.3em 1em;
+  background: #eef;
 }
-.juniko {
-  font-size: 2em;
-  line-height: 100%;
+
+.error {
+  background: pink;
+  border: 2px dashed red;
 }
 
 ul {
@@ -36,6 +40,31 @@ ul {
       max-height: 100%;
     }
   }
+}
+
+.rootpicker__selection {
+  border-radius: 1em;
+  padding: 0.5em 1em;
+  box-shadow: 1px 1px 5px #22222299 inset;
+}
+
+.rootpicker__selection__button {
+  font-size: 2em;
+}
+.rootpicker__selection__button-clr {
+  float: right;
+}
+
+.plinth {
+  padding-top: 33%;
+}
+
+.spp {
+  font: 3em/100% 'sitelen pona pona';
+}
+.juniko {
+  font-size: 2em;
+  line-height: 100%;
 }
 
 // .roots__root-phoneme { background: pink; }

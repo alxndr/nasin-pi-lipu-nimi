@@ -15,17 +15,10 @@ function tpTermToGlyph(term) {
     case 'monsuta':
     case 'n':
       return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${term}.jpg`
+    case 'misikele': // TODO
     default:
       return `https://sumpygump.github.io/sitelen-sitelen/word-glyphs/${term}.svg`;
   }
-}
-function tpMetaToGlyph(term) { // (quote) (question) (name) ! : .
-  if (term === '[')
-    return `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_cartouche.jpg`
-  // https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_capsule.jpg
-  // https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_exclamation.jpg
-  // https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_period.jpg
-  // https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_li.jpg
 }
 export function tpToGlyph({lasina}) {
   switch (lasina) {

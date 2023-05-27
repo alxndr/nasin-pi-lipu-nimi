@@ -1,74 +1,111 @@
 import * as React from 'react'
 import {graphql} from 'gatsby'
+import cn from 'classnames'
 
 import Analytics from '../components/analytics'
-import {findRootData, sortTermsByRoots, rootCodeToVisual, rootToRootType, sortRoots} from '../helpers/roots'
+import {
+  rootCodeToVisual,
+  rootToRootType,
+  rootsInOrder,
+  sortTermsByRoots,
+} from '../helpers/roots'
 import {tpToGlyph} from '../helpers/glyphs'
 import './index.scss'
 
 const ROOTS_COLUMN_NAME = 'wanpiSS' // gonna change this at some point ... don't forget the one in the graphQL query
 
 /* reducer function for initial ETL of roots data from CSV
- *  — accumulator param is object with props `terms` and `roots`
+ *  — accumulator param is terms
  *  — element param is GraphQL-output `edge` object with prop `node`
  * ...must always return accumulator in reducer functions
  */
 function reduceIt(acc, edge) {
   const rootsString = edge.node[ROOTS_COLUMN_NAME]
-  if (!rootsString.length) return console.log('!rootsString:',edge.node)|| acc
+  if (!rootsString.length) return acc
   const roots = rootsString.split(/\s+/)
-  roots.forEach(root => acc.rootsSet.add(root))
-  acc.terms.push({ lasina: edge.node.tokipona, roots, })
+  acc.push({ lasina: edge.node.tokipona, roots, })
   return acc
 }
 
-const IndexPage = (props) => {
-  const data = React.useMemo(
-    () => {
-      const {terms, rootsSet} = props.data.allDictCsv.edges.reduce(reduceIt, {terms:[], rootsSet:new Set() })
-      const termsSorted = terms.sort(sortTermsByRoots)
-      console.assert(rootsSet.length === 26, 'rootsSet length should be 26')
-      const rootsSorted = [...rootsSet].sort(sortRoots)
-      return {termsSorted, rootsSorted}
-    },
-    [props.data.allDictCsv.edges]
+function isGlyphAPlynth(lasina) { // TODO this isn't the right place nor implementation...
+  switch (lasina) {
+    case '.':
+    case '(quote)':
+    case '(question)':
+    case '(name)':
+    case '!':
+    case ',':
+    case ':':
+    case 'la':
+    case 'mute':
+      return true
+    default:
+      return false
+  }
+}
+
+function isSelectedRootsValid(selectedRoots) {
+  if (!selectedRoots?.length) return true
+  if (selectedRoots.length > 3) return false
+  return true
+}
+
+const IndexPage = ({data: {allDictCsv: {edges}}}) => {
+  const terms = React.useMemo(
+    () => edges.reduce(reduceIt, []).sort(sortTermsByRoots),
+    [edges]
   )
   const [selectedRoots, setSelectedRoots] = React.useState([])
-  const terms = React.useMemo(
+  const selection = React.useMemo(
     () => {
       if (!selectedRoots.length)
-        return data.termsSorted
-      return data.termsSorted.filter(termObj => termObj.roots.join(',').includes(selectedRoots.join(',')))
+        return terms
+      return terms.filter(termObj => termObj.roots.join(',').includes(selectedRoots.join(',')))
     },
-    [data.termsSorted, selectedRoots]
+    [terms, selectedRoots]
   )
-  console.assert(data.rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
+  React.useEffect(() => {
+    window.location.hash = isSelectedRootsValid(selectedRoots)
+      ? selectedRoots.join(':')
+      : ''
+  }, [selectedRoots]);
+  const rootsSorted = rootsInOrder()
+  console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
   return <>
-    <main className={selectedRoots.length > 3 ? 'error' : ''}>
+    <main>
 
-      <p className="help">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html" target="_blank">read a blog post about it</a></p>
+      <p className="help">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html" target="_blank" rel="noreferrer">read a blog post about it</a></p>
 
       <h1>nasin pi lipu nimi</h1>
 
-      <p>To identify a glyph, first select a root:
-        <span className="help">(<a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html#roots" target="_blank">what kind of order is this??</a>)</span>
-        TODO Where did S go??
-      </p>
-      <ul className="roots">
-        {data.rootsSorted.map(root =>
-          <li key={`root-${root}`} className={`roots__root-${rootToRootType(root)}`}>
-            <button onClick={() => setSelectedRoots([...selectedRoots, root])}>
-              {rootCodeToVisual(root)}
-            </button>
-          </li>
-        )}
-      </ul>
-      <p>Selected: TODO change to glyphs... {selectedRoots.join(', ')} ... <button onClick={() => setSelectedRoots([])}>clear</button></p>
+      <div className="rootpicker">
+        <p>To identify a glyph, first select a root:
+          <span className="help">(<a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html#roots" target="_blank" rel="noreferrer">what kind of order is this??</a>)</span>
+        </p>
+        <ul className="rootpicker__roots">
+          {rootsSorted.map(rootObj =>
+            <li key={`root-${rootObj.name}`} className={`roots__root-${rootToRootType(rootObj.code)} roots__root-${rootObj.name}`}>
+              <button onClick={() => setSelectedRoots([...selectedRoots, rootObj.name])}>
+                {rootCodeToVisual(rootObj.code)}
+              </button>
+            </li>
+          )}
+        </ul>
+        <p className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
+          TODO change to glyphs...
+          <ul>
+            {selectedRoots.map(r => <li key={r}>{r}</li>)}
+          </ul>
+          <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button>
+          <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
+        </p>
+      </div>
+      
       <ul className="glyphs">
-        {terms.map?.(termData => // TODO fix the punctuation/etc
+        {selection?.map?.(termData =>
           <li key={`glyph-${termData.lasina}`} className={`glyphs__glyph-${termData.lasina}`}>
-            <button><img src={tpToGlyph(termData)} /></button>
+            <button className={cn({plinth: isGlyphAPlynth(termData.lasina)})}><img src={tpToGlyph(termData)} alt={`sitelen pi nimi "${termData.lasina}"`} /></button>
           </li>
         )}
       </ul>
