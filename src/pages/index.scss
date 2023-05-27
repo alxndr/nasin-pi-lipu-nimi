@@ -45,19 +45,23 @@ ul {
 .rootpicker {}
 ul.rootpicker__roots {
   li {
-    border-radius: 50%;
+    margin: 0.2rem;
+    border-radius: 1rem;
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0.1rem 0.1rem 0.5rem #55111199;
+    }
   }
 }
 .rootpicker__roots__root-phoneme* {}
 .rootpicker__roots__root-shape,
 .rootpicker__roots__root-meta {
-  box-shadow: 1px 1px 5px #111 inset;
   line-height: 5rem;
 }
 
 .rootpicker__selection {
   display: flex;
-  height: 3rem;
+  height: 4rem;
   border-radius: 1em;
   padding: 0.5em 1em;
   box-shadow: 1px 1px 5px #22222299 inset;
@@ -69,13 +73,16 @@ ul.rootpicker__roots {
     width: 4rem;
     height: auto;
     text-align: center;
+    cursor: pointer;
   }
   p {
     margin: 0;
   }
 }
 .rootpicker__selection__button {
-  font-size: 2em;
+  font-size: 2rem;
+  width: 4rem;
+  border-radius: 1rem;
 }
 .rootpicker__selection__button-clr {
   order: 9;
@@ -85,6 +92,7 @@ ul.rootpicker__roots {
   li {
     margin: 0.1em;
     line-height: 6rem;
+    cursor: pointer;
     &:hover {
       box-shadow: 0.1em 0.1em 0.5em #66996699;
     }
@@ -98,7 +106,3 @@ ul.rootpicker__roots {
   font-size: 2em;
   line-height: 100%;
 }
-
-// .roots__root-phoneme { background: pink; }
-// .roots__root-shape { background: khaki; }
-// .roots__root-meta { background: gray; }

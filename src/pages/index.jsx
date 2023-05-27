@@ -42,15 +42,19 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
       global.console.log('selection...', selectedRoots, allDefinedGlyphs)
       if (!selectedRoots.length)
         return allDefinedGlyphs
-      const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => code).join('.*'))
+      const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => '\\'+code).join('.*'))
       return allDefinedGlyphs.filter(glyphObj => REGEX_SELECTED_ROOTS.test(glyphObj.roots.join('')))
     },
     [allDefinedGlyphs, selectedRoots]
   )
   React.useEffect(() => {
-    window.location.hash = isSelectedRootsValid(selectedRoots)
+    window.history?.pushState?.(
+      isSelectedRootsValid(selectedRoots)
       ? selectedRoots.map(rootObj => rootObj.name).join('+')
-      : ''
+      : '',
+      document.title,
+      window.location.pathname + window.location.search
+    )
   }, [selectedRoots]);
   const rootsSorted = rootsInOrder()
   console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
@@ -58,7 +62,7 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
   return <>
     <main>
 
-      <p className="help">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
+      <p className="help" style={{float:'right'}}>Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
 
       <h1>nasin pi lipu nimi</h1>
 
@@ -72,7 +76,7 @@ const IndexPage = ({data: {allDictCsv: {edges}}}) => {
         </ul>
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
-            ? <p>select a root above to see all glyphs below which contain it</p>
+            ? <p>select a root above to see all glyphs below which contain it; then select a glyph below to see its pronunciation and definition</p>
             : <>
               <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
               <ul>
