@@ -4,6 +4,7 @@ import {Modal} from 'react-responsive-modal'
 import cn from 'classnames'
 
 import Analytics from '../components/analytics'
+import Help from '../components/help'
 import Entry from '../components/entry'
 
 import {
@@ -24,9 +25,9 @@ const ROOTS_COLUMN_NAME = 'wanpiSS' // TODO change this at... don't forget the o
 const rootsSorted = rootsInOrder()
 console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
-const IndexPage = ({data: {allDictCsv: {edges: glyphEdges}, allDefinitionsJson: {edges: definitionEdges}}}) => {
-  console.assert(glyphEdges.length > 100, 'we should have at least a hundo glyphs here')
-  console.assert(definitionEdges.length > 250, 'should have couple hundred definitions')
+const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson: {edges: definitionEdges}}}) => {
+  console.assert(glyphEdges.length > 100, `should have at least a hundo glyphs here; got ${glyphEdges.length}`)
+  console.assert(definitionEdges.length > 130, `should have at least a hundo definitions; got ${definitionEdges.length}`)
   const allDefinitions = React.useMemo(
     () => definitionEdges.map(({node}) => node),
     [definitionEdges]
@@ -52,17 +53,7 @@ const IndexPage = ({data: {allDictCsv: {edges: glyphEdges}, allDefinitionsJson: 
     },
     [allDefinedGlyphs, selectedRoots]
   )
-  React.useEffect(() => {
-    window.history?.pushState?.(
-      isSelectedRootsValid(selectedRoots)
-      ? selectedRoots.map(rootObj => rootObj.name).join('+')
-      : '',
-      document.title,
-      window.location.pathname + window.location.search
-    )
-  }, [selectedRoots]);
   const [selectedGlyph, setSelectedGlyph] = React.useState(null)
-  const [modalVisible, setModalVisible] = React.useState(false);
   const selectedDefinition = React.useMemo(
     () => {
       return allDefinitions.find((defEdge => defEdge.word === selectedGlyph?.lasina))
@@ -70,18 +61,41 @@ const IndexPage = ({data: {allDictCsv: {edges: glyphEdges}, allDefinitionsJson: 
     [definitionEdges, selectedGlyph]
   )
 
+  function keyupHandler({key}) {
+    console.log('keyuppppp', typeof key, key)
+    switch (key) {
+      case 'Backspace':
+        removeLastSelectedRoot()
+        return
+      case 'Escape':
+        clearSelectedRoots()
+        return
+      default:
+        return
+    }
+  }
+  React.useEffect(() => {
+    window.addEventListener('keyup', keyupHandler)
+    return () => {
+      window.removeEventListener('keyup', keyupHandler)
+    }
+  }, [])
 
-  React.useEffect(() => console.log({selectedDefinition}), [selectedDefinition])
-  React.useEffect(() => console.log({selectedGlyph}), [selectedGlyph])
+  const clearSelectedRoots = () => setSelectedRoots([])
+  const removeLastSelectedRoot = () => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))
+
   return <>
     <main>
 
-      <p className="help help-toplevel">Help what is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></p>
+    <Help name="toplevel">
+      <span className="ls">a, ni li seme? toki INLI la <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">ni</a></span>
+      <span className="english">What is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></span>
+    </Help>
 
-      <h1 data-sitelen>nasin pi lipu nimi</h1> {/* TODO fix rendering */}
+      <h1 class="ls ls-large" title="nasin sitelen pi lipu nimi">nasin sitelen pi-__lipu__nimi</h1>
 
       <Modal open={!!selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
-        <Entry lasina={selectedGlyph?.lasina} data={selectedDefinition} />
+        <Entry glyph={selectedGlyph} data={selectedDefinition} />
       </Modal>
 
       <div className="rootpicker">
@@ -96,10 +110,10 @@ const IndexPage = ({data: {allDictCsv: {edges: glyphEdges}, allDefinitionsJson: 
           {selectedRoots.length === 0
             ? <p>select one or more roots above to see all glyphs below which contain it; and/or select a glyph below to see its pronunciation and definition</p>
             : <>
-              <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={() => setSelectedRoots([])} title="clear all">∅</button>
+              <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={clearSelectedRoots} title="clear all">clear</button>
               <ul>
                 {selectedRoots.map(rootObj => <li key={rootObj.name}>{rootDataToVisual(rootObj)}</li>)}
-                {selectedRoots.length > 0 && <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={() => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))} title="remove last">⌫</button>}
+                {selectedRoots.length > 0 && <li><button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={removeLastSelectedRoot} title="remove last">⌫ delete</button></li>}
               </ul>
             </>
           }
@@ -128,23 +142,15 @@ export default IndexPage
 
 export const Head = () => <>
   <title>nasin sitelen pi lipu nimi</title>
-  <link
-    rel="stylesheet"
-    href="http://livingtokipona.smoishele.com/styles/sitelen-sitelen-renderer.css"
-  />
-  <script
-    type="text/javascript"
-    src="http://livingtokipona.smoishele.com/dist/sitelen-sitelen-renderer.min.js"
-  ></script>
 </>
 
 export const IndexQuery = graphql`
   query {
-    allDictCsv {
+    allRootsCsv {
       edges {
         node {
           tokipona
-          wanpiSS
+          roots
         }
       }
     }

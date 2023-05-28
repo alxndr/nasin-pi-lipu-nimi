@@ -2,12 +2,42 @@
   display: flex;
   flex-flow: row wrap;
 
+  > * {
+    margin: 0;
+  }
   h2 {
     flex-grow: 3;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+    font-size: 3rem;
   }
   .entry__definition {
     flex-basis: 100%;
+    padding: 1rem;
+    p {
+      margin: 0.5rem 0;
+    }
+  }
+  .entry__definition__graf {
+    font-size: 1.2rem;
+    &:first-child {
+      font-size: 1.3rem;
+    }
+  }
+  .entry__roots {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    box-shadow: 0.1rem 0.1rem 0.5rem #22222299 inset;
+    > span,
+    > img {
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
   }
 }
