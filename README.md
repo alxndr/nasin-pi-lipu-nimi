@@ -1,5 +1,10 @@
 ## nasin sitelen pi lipu nimi (glyph dictionary)
 
+What? [Read a blog post about this](https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=github.com&campaign=nasin-readme)
+
+This is a dictionary for looking up _sitelen sitelen_ glyphs using parts of the glyphs themselves, and not the pronunciation nor Latin-based spelling of the glyphs.
+
+
 ## jan pi pona tawa mi (thanks & acknowledgements)
 
 * the SVG _sitelen sitelen_ glyphs on this page are Sumpygump's [ported SVGs](https://sumpygump.github.io/sitelen-sitelen/) of jan Same's [glyph vectors](http://musilili.net/sitelen-sitelen-remastered/)
