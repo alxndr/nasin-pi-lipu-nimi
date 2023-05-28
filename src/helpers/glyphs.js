@@ -36,4 +36,3 @@ export function lasinaToGlyph({lasina}) {
     default           : return tpTermToGlyph(lasina)
   }
 }
-

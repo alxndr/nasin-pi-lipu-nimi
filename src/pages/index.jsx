@@ -123,7 +123,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
         </ul>
       </div>
 
-      <Help>Select a glyph below to see its pronunciation and definition</Help>
+      <Help>select a glyph below to see its pronunciation and definition</Help>
       <ul className="glyphs">
         {filteredGlyphs?.map?.(glyphData =>
           <li onClick={() => setSelectedGlyph(glyphData)} className={`glyphs__glyph-${glyphData.lasina}`} key={`glyph-${glyphData.lasina}`}>
