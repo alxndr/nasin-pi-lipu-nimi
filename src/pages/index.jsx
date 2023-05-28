@@ -91,8 +91,8 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     <main>
 
     <Help name="toplevel">
-      <span className="ls">a, ni li seme? toki INLI la <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">ni</a></span>
-      <span className="english">What is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
+      <span className="english">What is this?? <br/> <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
+      <span className="ls">a, ni li seme? <br/> toki INLI la <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">ni</a></span>
     </Help>
 
       <h1 className="ls" title="nasin sitelen pi lipu nimi">nasin sitelen pi-__lipu__nimi</h1>
@@ -102,16 +102,9 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
       </Modal>
 
       <div className="rootpicker">
-        <ul className="rootpicker__roots">
-          {rootsSorted.map(rootObj =>
-            <li onClick={() => setSelectedRoots([...selectedRoots, rootObj])} key={`root-${rootObj.name}`} className={`rootpicker__roots__root-${rootToRootType(rootObj.code)} roots__root-${rootObj.name}`}>
-              {rootCodeToVisual(rootObj.code)}
-            </li>
-          )}
-        </ul>
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
-            ? <p>select one or more roots above to see all glyphs below which contain it; and/or select a glyph below to see its pronunciation and definition</p>
+            ? <Help>select one or more roots (below) to see all glyphs which contain the root</Help>
             : <>
               <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={clearSelectedRoots} title="clear all">clear</button>
               <ul>
@@ -121,8 +114,16 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
             </>
           }
         </div>
+        <ul className="rootpicker__roots">
+          {rootsSorted.map(rootObj =>
+            <li onClick={() => setSelectedRoots([...selectedRoots, rootObj])} key={`root-${rootObj.name}`} className={`rootpicker__roots__root-${rootToRootType(rootObj.code)} roots__root-${rootObj.name}`}>
+              {rootCodeToVisual(rootObj.code)}
+            </li>
+          )}
+        </ul>
       </div>
 
+      <Help>Select a glyph below to see its pronunciation and definition</Help>
       <ul className="glyphs">
         {filteredGlyphs?.map?.(glyphData =>
           <li onClick={() => setSelectedGlyph(glyphData)} className={`glyphs__glyph-${glyphData.lasina}`} key={`glyph-${glyphData.lasina}`}>
