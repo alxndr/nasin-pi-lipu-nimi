@@ -64,6 +64,9 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     [definitionEdges, selectedGlyph]
   )
 
+  const clearSelectedRoots = () => setSelectedRoots([])
+  const removeLastSelectedRoot = () => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))
+
   function keyupHandler({key}) {
     switch (key) {
       case 'Backspace':
@@ -83,9 +86,6 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
       window.removeEventListener('keyup', keyupHandler)
     }
   }, [])
-
-  const clearSelectedRoots = () => setSelectedRoots([])
-  const removeLastSelectedRoot = () => setSelectedRoots(selectedRoots.slice(0, selectedRoots.length - 1))
 
   return <>
     <main>
