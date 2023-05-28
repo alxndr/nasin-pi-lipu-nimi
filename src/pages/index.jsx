@@ -47,7 +47,6 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
   const filteredGlyphs = React.useMemo(
     () => {
       return allDefinedGlyphs.filter(({roots, rootsAlt}) => 
-        global.console.log('rootsalt??', rootsAlt, selectedRoots)||
         selectedRoots.reduce((boolResult, selectedRootObj) => {
           return boolResult &&
             (roots.includes(selectedRootObj.code) // the glyph's main roots includes this selected root,
@@ -66,9 +65,9 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
   )
 
   function keyupHandler({key}) {
-    console.log('keyuppppp', typeof key, key)
     switch (key) {
       case 'Backspace':
+        // TODO why does this clear all of them and not just the last one...
         removeLastSelectedRoot()
         return
       case 'Escape':
@@ -98,7 +97,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
 
       <h1 className="ls" title="nasin sitelen pi lipu nimi">nasin sitelen pi-__lipu__nimi</h1>
 
-      <Modal open={!!selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
+      <Modal open={selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
         <Entry glyph={selectedGlyph} data={selectedDefinition} />
       </Modal>
 
