@@ -22,6 +22,7 @@ function glyphDefinition(unusualGlyphCode) {
 const REGEX_NON_ALPHA = /[^a-z]/
 
 const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation or "(usage)"
+  if (!glyph) return false
   return <div className="entry">
     <span className="entry__sitelenSitelen">
       <img src={data?.sitelen_sitelen || lasinaToGlyph(glyph)} alt={`glyph of "${glyph?.lasina}"`} />
@@ -32,7 +33,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
     </h2>
     <div className="entry__definition">
       {data?.def?.split?.(' | ALT ').map((def, idx) => <p className={`entry__definition__graf entry__definition__graf-${idx}`}>{def}</p>)
-      || glyphDefinition(glyph.lasina)}
+      || glyphDefinition(glyph?.lasina)}
     </div>
     <div className="entry__roots">
       {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
