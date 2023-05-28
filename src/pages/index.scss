@@ -124,6 +124,7 @@ ul {
     width: 5rem;
     height: 5rem;
     line-height: 7rem; // to push the plinth-shapes towards the bottom of their spaces
+    text-align: center; // to center the vertical shapes
     cursor: pointer;
     &:hover {
       background: pink;
@@ -136,13 +137,15 @@ ul {
 }
 
 footer {
-  margin: 5rem 0 0;
-  padding-top: 2rem;
+  margin: 1rem 0 0;
+  padding: 1rem;
   background: darkgray;
   color: aliceblue;
   display: flex;
   justify-content: center;
-
+  p {
+    margin: 1rem;
+  }
   a {
     color: aliceblue;
     text-decoration: underline;

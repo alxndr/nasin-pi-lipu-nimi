@@ -23,6 +23,8 @@ import './index.scss'
 const rootsSorted = rootsInOrder()
 console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
+const REGEX_WHITESPACE = /\s+/
+
 const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson: {edges: definitionEdges}}}) => {
   console.assert(glyphEdges.length > 100, `should have at least a hundo glyphs here; got ${glyphEdges.length}`)
   console.assert(definitionEdges.length > 130, `should have at least a hundo definitions; got ${definitionEdges.length}`)
@@ -34,8 +36,8 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     () => glyphEdges.reduce((glyphsAccumulator, edge) => {
       const rootsString = edge.node.roots
       if (!rootsString.length) return glyphsAccumulator
-      const roots = rootsString.split(/\s+/)
-      glyphsAccumulator.push({ lasina: edge.node.tokipona, roots, })
+      const roots = rootsString.split(REGEX_WHITESPACE)
+      glyphsAccumulator.push({ lasina: edge.node.tokipona, roots, rootsAlt: edge.node.rootsAlt?.split(REGEX_WHITESPACE)})
       return glyphsAccumulator
     }, []).sort(sortTermsByRoots),
     [glyphEdges]
@@ -44,10 +46,14 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
   const [selectedRoots, setSelectedRoots] = React.useState([]) // these should use the full objects from the roots helper...
   const filteredGlyphs = React.useMemo(
     () => {
-      if (!selectedRoots.length) return allDefinedGlyphs
-      // TODO replace this implementation with something that'll find the roots in any order...
-      const REGEX_SELECTED_ROOTS = new RegExp(selectedRoots.map(({code}) => '\\'+code).join('.*')) // escaping-backslash needed for the [ char 🫤
-      return allDefinedGlyphs.filter(glyphObj => REGEX_SELECTED_ROOTS.test(glyphObj.roots.join('')))
+      return allDefinedGlyphs.filter(({roots, rootsAlt}) => 
+        global.console.log('rootsalt??', rootsAlt, selectedRoots)||
+        selectedRoots.reduce((boolResult, selectedRootObj) => {
+          return boolResult &&
+            (roots.includes(selectedRootObj.code) // the glyph's main roots includes this selected root,
+            || rootsAlt.includes(selectedRootObj.code)) // ...or the glyph's alternate readings include this selected root
+        }, true)
+      )
     },
     [allDefinedGlyphs, selectedRoots]
   )
@@ -86,11 +92,11 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     <main>
 
     <Help name="toplevel">
-      <span className="ls">a, ni li seme? toki INLI la <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">ni</a></span>
-      <span className="english">What is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi&campaign=help" target="_blank" rel="noreferrer">read a blog post about it</a></span>
+      <span className="ls">a, ni li seme? toki INLI la <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">ni</a></span>
+      <span className="english">What is this?? <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
     </Help>
 
-      <h1 class="ls ls-large" title="nasin sitelen pi lipu nimi">nasin sitelen pi-__lipu__nimi</h1>
+      <h1 className="ls" title="nasin sitelen pi lipu nimi">nasin sitelen pi-__lipu__nimi</h1>
 
       <Modal open={!!selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
         <Entry glyph={selectedGlyph} data={selectedDefinition} />
@@ -129,6 +135,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     </main>
 
     <footer>
+      <p><a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">about this tool</a></p>
       <p><a href="https://github.com/alxndr/nasin-pi-lipu-nimi">code on GitHub</a></p>
     </footer>
 
@@ -149,6 +156,7 @@ export const IndexQuery = graphql`
         node {
           tokipona
           roots
+          rootsAlt
         }
       }
     }
