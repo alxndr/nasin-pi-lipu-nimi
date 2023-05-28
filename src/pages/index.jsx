@@ -20,8 +20,6 @@ import {lasinaToGlyph} from '../helpers/glyphs'
 import 'react-responsive-modal/styles.css'
 import './index.scss'
 
-const ROOTS_COLUMN_NAME = 'wanpiSS' // TODO change this at... don't forget the one in the graphQL query
-
 const rootsSorted = rootsInOrder()
 console.assert(rootsSorted.length === 26, 'rootsSorted should be 26 of em..')
 
@@ -34,7 +32,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
   )
   const allDefinedGlyphs = React.useMemo(
     () => glyphEdges.reduce((glyphsAccumulator, edge) => {
-      const rootsString = edge.node[ROOTS_COLUMN_NAME]
+      const rootsString = edge.node.roots
       if (!rootsString.length) return glyphsAccumulator
       const roots = rootsString.split(/\s+/)
       glyphsAccumulator.push({ lasina: edge.node.tokipona, roots, })
