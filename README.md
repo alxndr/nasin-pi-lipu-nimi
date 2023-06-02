@@ -1,4 +1,4 @@
-## nasin sitelen pi lipu nimi (glyph dictionary)
+## nasin sitelen pi lipu nimi ale (Toki Pona glyph dictionary)
 
 What? [Read a blog post about this](https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=github.com&campaign=nasin-readme)
 
