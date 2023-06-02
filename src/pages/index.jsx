@@ -134,6 +134,11 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
             <img src={lasinaToGlyph(glyphData)} alt={`sitelen pi nimi "${glyphData.lasina}"`} />
           </li>
         )}
+        {!filteredGlyphs?.length &&
+          <p className="error">
+            <span className="sp" lang="tp">nimi ala</span>
+            <span className="english">No glyphs found — remove some of the roots by clicking "delete" or "clear" above</span>
+          </p>}
       </ul>
 
     </main>
