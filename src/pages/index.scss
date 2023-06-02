@@ -1,3 +1,5 @@
+// fonts
+
 @font-face { 
   font-family: 'sitelen pona pona';
   src: url('https://jackhumbert.github.io/sitelen-pona-pona/fonts/sitelen-pona-pona.otf');
@@ -5,15 +7,12 @@
   text-rendering: optimizeLegibility;
   font-feature-settings: "liga" 1;
 }
-
-.sp {
+[lang='tp'] {
   font-family: 'sitelen pona pona';
 }
 .spp {
   font-family: 'sitelen pona pona' !important; // !i needed bc of sitelen-sitelen-renderer ??
 }
-
-.sp,
 .spp {
   a {
     text-decoration: none;
@@ -22,6 +21,15 @@
     padding: 0 0.1rem;
   }
 }
+
+/* snippet from http://livingtokipona.smoishele.com (?) */
+  [data-sitelen] { -webkit-writing-mode: vertical-lr; writing-mode: vertical-lr; text-align: justify; }
+  [data-sitelen-sentence] { width: 10em; }
+  button[data-sitelen] { background: transparent; display: block; border: none; }
+  button[data-sitelen] [data-sitelen-sentence] { height: 4em; width: 4em; }
+/* snippet-end */
+
+// "global"
 
 body {
   margin: 0;
@@ -42,6 +50,8 @@ body {
   background: pink;
   border: 2px dashed red;
 }
+
+// component-specific...
 
 h1 {
   font-size: 3.33rem;
@@ -129,7 +139,6 @@ ul {
 }
 
 .glyphs {
-  padding: 1rem;
   justify-content: center;
 
   > li {
@@ -149,7 +158,7 @@ ul {
   }
 
   .error {
-    .sp {
+    [lang="tp"] {
       font-size: 2rem;
       margin: 1rem;
     }

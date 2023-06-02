@@ -90,16 +90,16 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
   return <>
     <main>
 
-    <Help name="toplevel">
-      <span className="english">What is this?? <br/> <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
-      <span lang="tp" className="sp">
-        a ni li seme seme
-        <br/>
-        <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu ni</a> la mi toki kepeken toki INLI e ilo ni
-      </span>
-    </Help>
+      <Help name="toplevel">
+        <span className="english">What is this?? <br/> <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
+        <span lang="tp">
+          a ni li seme seme
+          <br/>
+          <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu ni</a> la mi toki kepeken toki INLI e ilo ni
+        </span>
+      </Help>
 
-      <h1 className="sp" lang="tp" title="nasin sitelen pi lipu nimi">nasin sitelen pi lipu nimi ale</h1>
+      <h1 lang="tp">nasin sitelen pi lipu nimi ale</h1>
 
       <Modal open={selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
         <Entry glyph={selectedGlyph} data={selectedDefinition} />
@@ -156,6 +156,7 @@ export default IndexPage
 
 export const Head = () => <>
   <title>nasin sitelen pi lipu nimi</title>
+  <script type="text/javascript" src="/static/sitelen-sitelen-renderer.min.js"></script>
 </>
 
 export const IndexQuery = graphql`
