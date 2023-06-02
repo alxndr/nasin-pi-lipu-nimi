@@ -6,15 +6,21 @@
   font-feature-settings: "liga" 1;
 }
 
-@font-face {
-  font-family: linjasike;
-  src: url('https://wyub.github.io/tokipona/linja-sike-5.otf');
-}
-.ls {
-  font-family: linjasike;
+.sp {
+  font-family: 'sitelen pona pona';
 }
 .spp {
   font-family: 'sitelen pona pona' !important; // !i needed bc of sitelen-sitelen-renderer ??
+}
+
+.sp,
+.spp {
+  a {
+    text-decoration: none;
+    background: #00E1;
+    margin: 0 0.1rem;
+    padding: 0 0.1rem;
+  }
 }
 
 body {
@@ -23,10 +29,13 @@ body {
 
 .help-toplevel {
   display: flex;
-  flex-flow: columns nowrap;
+  flex-flow: row nowrap;
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
+  .english {
+    order: 2;
+  }
 }
 
 .error {
@@ -35,8 +44,9 @@ body {
 }
 
 h1 {
+  font-size: 3.33rem;
+  margin: 1rem;
   text-align: center;
-  font-size: 2rem;
 }
 
 ul {

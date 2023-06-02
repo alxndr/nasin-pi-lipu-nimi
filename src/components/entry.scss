@@ -1,16 +1,48 @@
 .entry {
   display: flex;
   flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-end; // this puts the .entry__roots over to the right side
+  padding-top: 1rem;
+  font-size: 2rem;
+
+  .latin {
+    font-family: fantasy;
+  }
 
   > * {
     margin: 0;
   }
-  h2 {
-    flex-grow: 3;
+  .entry__sitelenSitelen,
+  .entry__sitelenAnte {
     display: flex;
-    justify-content: space-evenly;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
     align-items: center;
-    font-size: 3rem;
+    width: 50%;
+  }
+  .entry__sitelenSitelen {
+    img {
+      width: 80%;
+      max-width: 100px;
+      margin: 0 auto;
+    }
+  }
+  .entry__sitelenLasina {
+    display: flex;
+    align-items: center;
+    .latin {
+      padding: 1rem;
+    }
+  }
+  .entry__sitelenEmosi {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    .emoji {
+      padding: 1rem;
+      font-size: 3rem;
+    }
   }
   .entry__definition {
     flex-basis: 100%;
@@ -27,9 +59,10 @@
   }
   .entry__roots {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0 auto;
+    // justify-content: space-evenly;
+    // justify-content: space-around;
+    // align-items: center;
+    margin: 0 1rem;
     padding: 0.75rem;
     border-radius: 1rem;
     box-shadow: 0.1rem 0.1rem 0.5rem #22222299 inset;
