@@ -21,32 +21,18 @@ function glyphDefinition(unusualGlyphCode) {
 
 const REGEX_NON_ALPHA = /[^a-z]/
 
-// const REGEX_TP_CONSONANTS = [jptkmwnls]
-// const REGEX_TP_VOWELS = [aeiou]
-const REGEX_SYLLABLE_TOKIPONA = /^([jptkmwnls]?[aeiou](?:n(?![aeiou]))?)(.*)$/
-function splitIntoSyllables(word, syllables=[]) {
-  if (!word.length) return syllables
-  if (word.length === 1 && word === 'n') return [...syllables, 'n'] // special-case...
-  if (!REGEX_SYLLABLE_TOKIPONA.test(word)) throw new Error(`Can't split into syllables: "${word}"`)
-  const [_word, nextSyllable, remainder] = REGEX_SYLLABLE_TOKIPONA.exec(word)
-  return splitIntoSyllables(remainder, [...syllables, nextSyllable])
-}
-
 const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation or "(usage)"
   React.useEffect(() => {
-    // global.setTimeout(() => // TODO add a loop...
-      global?.sitelenRenderer?.init?.()
-      // , 10)
+    global?.sitelenRenderer?.init?.()
   })
   if (!glyph) return false
-  const syllables = splitIntoSyllables(glyph?.lasina)
   return <div className="entry">
     <div className="entry__sitelenSitelen">
       <span lang="tp">sina lukin e sitelen ni</span>
       <img className="entry__sitelenSitelen__image" src={data?.sitelen_sitelen || lasinaToGlyph(glyph)} alt={`glyph of "${glyph?.lasina}"`} />
     </div>
     <div className="entry__sitelenAnte">
-      {glyph?.lasina &&
+      {data && glyph?.lasina &&
         <div className="entry__sitelenPona" lang="tp">
           <span lang="tp">sitelen ni la o sitelen kepeken sitelen pona e ni</span>
           <span className="entry__sitelenPona__nimi">
@@ -72,10 +58,10 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
       }
     </div>
     <div className="entry__body">
-      {glyph?.lasina &&
+      {data && glyph?.lasina &&
         <span className="entry__pronunciation">
           <span lang="tp">sitelen ni la o toki uta e ni</span>
-          <span data-sitelen data-sitelen-ratio="0.75" className="entry__pronunciation__glyphs">
+          <span data-sitelen className="entry__pronunciation__glyphs">
             {glyph?.lasina.toUpperCase()}
           </span>
         </span>
@@ -90,7 +76,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
             }
           </div>
         </div>
-      }
+      || glyph?.lasina}
     </div>
     <span lang="tp">sitelen ni la wan nasin li ni</span>
     <div className="entry__roots">
