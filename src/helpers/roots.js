@@ -57,7 +57,7 @@ export function findRootData(root) {
 }
 
 export function rootDataToVisual(rootData) {
-  return rootData.component || <img src={letterToGlyph(rootData.name)} alt={`sitelen pi nimi ${rootData.name}`} />
+  return rootData.component || <img key={`visual-${rootData.name}`} src={letterToGlyph(rootData.name)} alt={`sitelen pi nimi ${rootData.name}`} />
 }
 export function rootCodeToVisual(rootCode) {
   return rootDataToVisual(findRootData(rootCode))

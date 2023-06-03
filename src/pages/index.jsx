@@ -155,8 +155,9 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
 export default IndexPage
 
 export const Head = () => <>
-  <title>nasin sitelen pi lipu nimi</title>
-  <script type="text/javascript" src="/static/sitelen-sitelen-renderer.min.js"></script>
+  <title>nasin sitelen pi lipu nimi ale</title>
+  <script type="text/javascript" src="/static/sitelen-sitelen-renderer.20230527.min.js"></script>
+  {/*<script type="text/css" src="/static/sitelen-sitelen-renderer.20230527.css"></script>*/}
 </>
 
 export const IndexQuery = graphql`
