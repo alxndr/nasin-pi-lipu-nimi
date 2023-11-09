@@ -156,8 +156,7 @@ export default IndexPage
 
 export const Head = () => <>
   <title>nasin sitelen pi lipu nimi ale</title>
-  <script type="text/javascript" src="/static/sitelen-sitelen-renderer.20230527.min.js"></script>
-  {/*<script type="text/css" src="/static/sitelen-sitelen-renderer.20230527.css"></script>*/}
+  <script type="text/javascript" src="assets/sitelen-sitelen-renderer.min.js"></script>
 </>
 
 export const IndexQuery = graphql`

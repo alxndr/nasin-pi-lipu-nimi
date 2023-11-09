@@ -73,9 +73,19 @@
     span {
       margin-right: 0.5rem;
     }
-    svg {
-      max-width: 5rem;
+
+    [data-sitelen] * {
+      stroke: 1;
+    }
+    [data-sitelen] > svg {
+      min-width: 3em;
+      min-height: 5em;
       overflow: visible;
+    }
+    #cartouche > path,
+    #cartouche-tall-wide > path {
+      fill: rgb(213 213 213);
+      stroke-width: 2;
     }
   }
   .entry__definition {

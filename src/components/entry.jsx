@@ -23,7 +23,7 @@ const REGEX_NON_ALPHA = /[^a-z]/
 
 const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation or "(usage)"
   React.useEffect(() => {
-    global?.sitelenRenderer?.init?.()
+    glyph?.lasina && global.sitelenRenderer?.init?.()
   })
   if (!glyph) return false
   return <div className="entry">

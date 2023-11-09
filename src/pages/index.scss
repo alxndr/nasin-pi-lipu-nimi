@@ -22,12 +22,6 @@
     padding: 0 0.1rem;
   }
 }
-/* snippet adapted from http://livingtokipona.smoishele.com */
-  [data-sitelen] { -webkit-writing-mode: vertical-lr; writing-mode: vertical-lr; text-align: justify; }
-  [data-sitelen-sentence] { width: 10rem; }
-  button[data-sitelen] { background: transparent; display: block; border: none; }
-  button[data-sitelen] [data-sitelen-sentence] { height: 4rem; width: 4rem; }
-/* snippet-end */
 
 // "global"
 
