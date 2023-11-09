@@ -61,7 +61,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
       {data && glyph?.lasina &&
         <span className="entry__pronunciation">
           <span lang="tp">sitelen ni la o toki uta e ni</span>
-          <span data-sitelen className="entry__pronunciation__glyphs">
+          <span data-sitelen data-sitelen-ratio="0.2" className="entry__pronunciation__glyphs">
             {glyph?.lasina.toUpperCase()}
           </span>
         </span>
