@@ -76,7 +76,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
             }
           </div>
         </div>
-      || glyph?.lasina}
+      : glyph?.lasina}
     </div>
     <span lang="tp">sitelen ni la wan nasin li ni</span>
     <div className="entry__roots">
