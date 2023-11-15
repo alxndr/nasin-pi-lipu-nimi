@@ -8,14 +8,14 @@
     "node": ">=20.2.0"
   },
   "scripts": {
-    "predata:fetch": "echo fetching fresh definition data…",
-    "data:fetch": "curl -so - https://linku.la/jasima/data.json | jq '[.data[] | select(.usage_category==\"core\" or .usage_category==\"widespread\" or .usage_category==\"uncommon\") | {word, sitelen_emosi, sitelen_sitelen, def: .def.en}]' >src/data/definitions.json",
-    "predevelop": "npm run data:fetch",
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
     "build": "gatsby build",
+    "clean": "gatsby clean",
+    "data:fetch": "curl -so - https://linku.la/jasima/data.json | jq '[.data[] | select(.usage_category==\"core\" or .usage_category==\"widespread\" or .usage_category==\"uncommon\") | {word, sitelen_emosi, sitelen_sitelen, def: .def.en}]' >src/data/definitions.json",
+    "develop": "gatsby develop",
+    "predata:fetch": "echo fetching fresh definition data…",
+    "predevelop": "npm run data:fetch",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "start": "gatsby develop"
   },
   "dependencies": {
     "classnames": "2.3.2",
