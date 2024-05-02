@@ -1,6 +1,13 @@
 .help {
-  margin: 1em;
   border: 1px dotted #667;
   padding: 0.3em 1em;
   background: #eef;
+  display: flex;
+  flex-flow: column nowrap;
+
+  &-error {
+    background: pink;
+    border: 2px dashed red;
+  }
+
 }

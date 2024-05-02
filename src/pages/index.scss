@@ -13,7 +13,6 @@
 .spp {
   font-family: 'sitelen pona pona' !important; // !i needed bc of sitelen-sitelen-renderer ??
 }
-[lang='tp'],
 .spp {
   a {
     text-decoration: none;
@@ -23,10 +22,25 @@
   }
 }
 
+@font-face { /* v4 includes 'linluwi' */
+  font-family: sp-NasinNanpa;
+  src: url('https://raw.githubusercontent.com/ETBCOR/nasin-nanpa/n4.0.0/versions/nasin-nanpa-4.0.0.otf');
+  font-weight: 400;
+}
+*[lang='tp'],
+*[lang='tp'] * {
+  font-family: sp-NasinNanpa;
+}
+
+
 // "global"
 
 body {
   margin: 0;
+}
+
+main > * {
+  margin: 0 1rem 0.5rem;
 }
 
 .help-toplevel {
@@ -35,17 +49,11 @@ body {
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
+  *[lang="en"],
   .english {
     order: 2;
   }
 }
-
-.error {
-  background: pink;
-  border: 2px dashed red;
-}
-
-// component-specific...
 
 h1 {
   font-size: 3.33rem;
@@ -60,11 +68,9 @@ ul {
   list-style: none;
   margin: 1rem auto;
   padding: 0;
-
 }
 
 .rootpicker {
-  margin: 0 1rem;
   padding: 0.5rem 0;
   border-radius: 1rem;
   box-shadow: 0.2rem 0.2rem 0.5rem #11111199;
@@ -107,29 +113,33 @@ ul {
 
 .rootpicker__selection {
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   height: 4rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
 
-  ul {
-    margin: 0;
-    max-width: 25rem;
-  }
-  li {
+  .rootpicker__selection__root {
     height: 2rem;
-    margin: 1rem;
+    margin: 0.7rem;
+    font-size: 3rem;
+    line-height: 2rem;
     text-align: center;
     cursor: default;
   }
   button {
+    margin: 0.5rem;
     cursor: pointer;
+    flex-basis: 1rem;
   }
   img {
     max-height: 2rem;
   }
 }
-.rootpicker__selection__button {
+
+.no-glyphs-found button.rootpicker__selection__button-del {
+  font-weight: bold;
+  background: pink;
 }
 
 .glyphs {
