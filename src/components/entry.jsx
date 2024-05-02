@@ -31,53 +31,53 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
       <span lang="tp">sina lukin e sitelen</span>
       <img className="entry__sitelenSitelen__image" src={data?.sitelen_sitelen || lasinaToGlyph(glyph)} alt={`glyph of "${glyph?.lasina}"`} />
     </div>
-    <div className="entry__sitelenAnte">
-      {data && glyph?.lasina &&
-        <div className="entry__sitelenPona" lang="tp">
-          <span lang="tp">sitelen ona li sama e nimi</span>
-          <span className="entry__sitelenPona__nimi">
-            {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
-          </span>
-        </div>
-      }
-      {data?.sitelen_emosi &&
-        <div className="entry__sitelenEmosi">
-          <span lang="tp">o ken sitelen e ona kepeken toki jelo la</span>
-          <span className="emoji">
-            {data?.sitelen_emosi}
-          </span>
-        </div>
-      }
-      {glyph?.lasina &&
-        <div className="entry__sitelenLasina" lang="tp">
-          <span lang="tp">o ken sitelen e ona kepeken sitelen [insa li] la</span>
-          <span className="latin">
-            {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
-          </span>
-        </div>
-      }
-    </div>
-    <div className="entry__body">
-      {data && glyph?.lasina &&
-        <span className="entry__pronunciation">
-          <span lang="tp">o ken sitelen e ona kepeken sitelen suwi la</span>
-          <span data-sitelen data-sitelen-ratio="0.2" className="entry__pronunciation__glyphs">
-            {glyph?.lasina.toUpperCase()}
-          </span>
+    {data && glyph?.lasina &&
+      <span className="entry__pronunciation">
+        <span lang="tp">o ken sitelen e ona kepeken sitelen suwi ni</span>
+        <span data-sitelen data-sitelen-ratio="0.2" className="entry__pronunciation__glyphs">
+          {glyph?.lasina.toUpperCase()}
         </span>
-      }
-      {data?.def
-      ? <div className="entry__definition">
-          <span lang="tp">o ken toki e MEANING ona la</span>
+      </span>
+    }
+    {glyph?.lasina &&
+      <div className="entry__sitelenLasina" lang="tp">
+        <span lang="tp">o ken sitelen e ona kepeken sitelen INLI ni</span>
+        <span className="latin">
+          {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
+        </span>
+      </div>
+    }
+    {data && glyph?.lasina &&
+      <div className="entry__sitelenPona" lang="tp">
+        <span lang="tp">sitelen ona li sama e nimi</span>
+        <span className="entry__sitelenPona__nimi">
+          {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
+        </span>
+      </div>
+    }
+    {data?.sitelen_emosi &&
+      <div className="entry__sitelenEmosi">
+        <span lang="tp">o ken sitelen e ona kepeken toki jelo ni</span>
+        <span className="emoji">
+          {data?.sitelen_emosi}
+        </span>
+      </div>
+    }
+   <div className="entry__definition">
+     {data?.def
+      ? <>
+          <span lang="tp">o ken toki e MEANING ona kepeken ni</span>
           <div className="latin">
             {data?.def?.split?.(' | ALT ')[0] || glyphDefinition(glyph?.lasina)}
           </div>
-        </div>
+        </>
       : glyph?.lasina}
     </div>
-    <span lang="tp">o sitelen ona li wan tan ilo ROOT ni la</span>
-    <div className="entry__roots">
-      {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
+    <div className="entry__rootscontainer">
+      <span lang="tp">o sitelen ona li wan tan ilo ROOT ni</span>
+      <div className="entry__rootscontainer__roots">
+        {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
+      </div>
     </div>
   </div>
 }

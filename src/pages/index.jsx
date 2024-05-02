@@ -101,9 +101,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
       <Help name="toplevel">
         <span className="english">What is this?? <br/> <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
         <span lang="tp">
-          ni li seme seme
-          <br/>
-          <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi la</a> mi toki tan ilo ni kepeken toki INLI
+          ni li seme seme. o lukin e <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi</a> tan ilo ni kepeken toki INLI
         </span>
       </Help>
 
@@ -138,8 +136,8 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
 
       {filteredGlyphs.length
         ? <Help>
-            <span lang="en">select a glyph below to see its definition</span>
             <span lang="tp">o luka e sitelen suwi la o lukin e toki ona</span>
+            <span lang="en">select a glyph below to see its definition</span>
           </Help>
         : <Help name="error">
             <span lang="tp">nimi ala la o weka e ilo ROOT</span>

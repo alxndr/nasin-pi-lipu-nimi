@@ -1,20 +1,19 @@
 .entry {
   display: flex;
   flex-flow: row wrap;
-  align-items: center;
-  justify-content: flex-end; // this puts the .entry__roots over to the right side
+  justify-content: space-around;
+  align-content: stretch;
+  align-items: stretch;
   padding-top: 1rem;
   font-size: 2rem;
 
   .latin {
     font-family: fantasy;
   }
-
   > * {
     margin: 0;
   }
-  .entry__sitelenSitelen,
-  .entry__sitelenAnte {
+  .entry__sitelenSitelen {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
@@ -41,7 +40,7 @@
     }
   }
   .entry__sitelenLasina {
-    display: none;//flex;
+    display: none; //flex;
     flex-direction: column;
     align-items: center;
     font-size: 1.125rem;
@@ -73,7 +72,6 @@
     span {
       margin-right: 0.5rem;
     }
-
     [data-sitelen] * {
       stroke: 1;
     }
@@ -98,13 +96,11 @@
       font-size: 1.3rem;
     }
   }
-  .entry__roots {
+
+  .entry__rootscontainer {}
+  .entry__rootscontainer__roots {
     display: flex;
-    // justify-content: space-evenly;
-    // justify-content: space-around;
-    // align-items: center;
-    > span,
-    > img {
+    > * {
       margin: 0 1rem;
       padding: 0.75rem;
       border-radius: 0.3rem;
@@ -113,6 +109,7 @@
       width: 2rem;
       height: 2rem;
       line-height: 2.5rem;
+      text-align: center;
     }
   }
 }
