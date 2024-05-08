@@ -105,7 +105,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
         </span>
       </Help>
 
-      <h1 lang="tp">nasin-sitelen tawa lipu pi(nimi+ale)</h1>
+      <h1 lang="tp" className="sp-ll">nasin sitelen tawa lipu pi(nimi ale)</h1>
 
       <Modal open={selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
         <Entry glyph={selectedGlyph} data={selectedDefinition} />
