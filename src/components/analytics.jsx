@@ -5,7 +5,7 @@ export default function Analytics() {
     <script>
       {`
         window.goatcounter = {
-          path: (location.host + '/' + location.pathname),
+          path: (location.host + "/" + location.pathname),
         }
       `}
     </script>
