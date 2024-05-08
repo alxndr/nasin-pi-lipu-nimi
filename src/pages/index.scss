@@ -1,32 +1,20 @@
 // fonts
 
-@font-face {
-  font-family: 'sitelen pona pona';
-  src: url('https://jackhumbert.github.io/sitelen-pona-pona/fonts/sitelen-pona-pona.otf');
-  font-weight: 400;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "liga" 1;
-}
-[lang='tp'] {
-  font-family: 'sitelen pona pona';
-}
-.spp {
-  font-family: 'sitelen pona pona' !important; // !i needed bc of sitelen-sitelen-renderer ??
-}
-.spp {
-  a {
-    text-decoration: none;
-    background: #00E1;
-    margin: 0 0.1rem;
-    padding: 0 0.1rem;
-  }
-}
-
 @font-face { /* v4 includes 'linluwi' */
   font-family: sp-NasinNanpa;
   src: url('https://raw.githubusercontent.com/ETBCOR/nasin-nanpa/n4.0.0/versions/nasin-nanpa-4.0.0.otf');
   font-weight: 400;
 }
+
+@font-face {
+  font-family: sp-LinjaLipamanka;
+  src: url('https://lipamanka.gay/linjalipamanka-normal.otf');
+  font-weight: 400;
+}
+.sp-ll {
+  font-family: sp-LinjaLipamanka;
+}
+
 *[lang='tp'],
 *[lang='tp'] * {
   font-family: sp-NasinNanpa;
@@ -93,8 +81,8 @@ ul {
   img {
     border-radius: 33%;
   }
-  .spp {
-    font-size: 3rem;
+  span {
+    font-size: 2rem;
   }
   .juniko {
     font-size: 2rem;
