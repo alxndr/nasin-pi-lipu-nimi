@@ -105,7 +105,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
         </span>
       </Help>
 
-      <h1 lang="tp">nasin sitelen pi( lipu nimi+ale )</h1>
+      <h1 lang="tp">nasin-sitelen tawa lipu pi(nimi+ale)</h1>
 
       <Modal open={selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
         <Entry glyph={selectedGlyph} data={selectedDefinition} />
@@ -115,8 +115,8 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
             ? <Help>
-                <span lang="tp">o luka e ilo ROOT la o lukin e poki anpa, o luka e sitelen suwi</span>
-                <span lang="en">select a root to see all glyphs which contain the root</span>
+                <span lang="tp">o luka e ijo ni la o lukin e poki anpa, o luka e sitelen suwi</span>
+                <span lang="en">select a root to see all glyphs below which contain the root</span>
               </Help>
             : <>
               {selectedRoots.map(rootObj => <span class="rootpicker__selection__root" key={rootObj.name}>{rootDataToVisual(rootObj)}</span>)}
@@ -162,7 +162,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
 export default IndexPage
 
 export const Head = () => <>
-  <title>nasin sitelen pi lipu nimi ale</title>
+  <title>nasin sitelen tawa lipu pi nimi ale</title>
   <script type="text/javascript" src="assets/sitelen-sitelen-renderer.min.js"></script>
 </>
 

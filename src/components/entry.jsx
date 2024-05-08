@@ -33,7 +33,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
     </div>
     {data && glyph?.lasina &&
       <span className="entry__pronunciation">
-        <span lang="tp">o ken sitelen e ona kepeken sitelen suwi ni</span>
+        <span lang="tp">o ken toki e nimi ona la</span>
         <span data-sitelen data-sitelen-ratio="0.2" className="entry__pronunciation__glyphs">
           {glyph?.lasina.toUpperCase()}
         </span>
@@ -57,7 +57,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
     }
     {data?.sitelen_emosi &&
       <div className="entry__sitelenEmosi">
-        <span lang="tp">o ken sitelen e ona kepeken toki jelo ni</span>
+        <span lang="tp">o ken sitelen e ona kepeken toki jelo ni3</span>
         <span className="emoji">
           {data?.sitelen_emosi}
         </span>
@@ -74,7 +74,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
       : glyph?.lasina}
     </div>
     <div className="entry__rootscontainer">
-      <span lang="tp">o sitelen ona li wan tan ilo ROOT ni</span>
+      <span lang="tp">o sitelen ona li wan tan ijo ni</span>
       <div className="entry__rootscontainer__roots">
         {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
       </div>
