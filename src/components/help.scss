@@ -1,13 +1,30 @@
 .help {
+  margin: 0.5em auto;
   border: 1px dotted #667;
   padding: 0.3em 1em;
   background: #eef;
   display: flex;
   flex-flow: column nowrap;
+  text-align: center;
 
   &-error {
     background: pink;
     border: 2px dashed red;
+  }
+
+  &-toplevel {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin-top: 0;
+    padding: 0.2em 0;
+    text-align: center;
+    *[lang="en"],
+    .english {
+      order: 2;
+    }
   }
 
 }

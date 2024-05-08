@@ -39,24 +39,18 @@ body {
   margin: 0;
 }
 
+main {
+  display: flex;
+  flex-flow: column nowrap
+}
+
 main > * {
   margin: 0 1rem 0.5rem;
 }
 
-.help-toplevel {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-evenly;
-  align-items: center;
-  text-align: center;
-  *[lang="en"],
-  .english {
-    order: 2;
-  }
-}
-
 h1 {
   font-size: 3.33rem;
+  font-weight: 100;
   margin: 1rem;
   text-align: center;
 }
@@ -106,7 +100,6 @@ ul {
     font-size: 2rem;
   }
 }
-// .rootpicker__roots__root-phoneme* {}
 .rootpicker__roots__root-shape,
 .rootpicker__roots__root-meta {
   line-height: 4rem;
@@ -117,7 +110,6 @@ ul {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-start;
-  height: 4rem;
   padding: 0.5rem 0.7rem;
 
   .rootpicker__selection__root {

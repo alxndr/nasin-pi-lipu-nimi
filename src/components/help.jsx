@@ -4,7 +4,7 @@ import cn from 'classnames'
 import './help.scss'
 
 export default function Help({children, name}) {
-  return <div className={cn('help', `help-${name}`)}>
+  return <div className={cn('help', {[`help-${name}`]: !!name})}>
     {children}
   </div>
 }
