@@ -12,6 +12,7 @@
   }
   > * {
     margin: 0;
+    background: radial-gradient(#0e02 0, transparent 70%);
   }
   .entry__sitelenSitelen {
     display: flex;
@@ -30,7 +31,7 @@
     padding: 1rem;
     font-size: 2.5rem;
     line-height: 1em;
-    background: radial-gradient(#00e2 0, transparent 70%);
+    background: radial-gradient(#00e2 0, transparent 80%);
     border-radius: 1rem;
   }
   .entry__sitelenSitelen {
@@ -56,6 +57,7 @@
     .emoji {
       padding: 1rem;
       font-size: 2rem;
+      background: radial-gradient(#00e2 0, transparent 80%);
     }
   }
   .entry__body {
@@ -68,7 +70,7 @@
   .entry__pronunciation {
     display: flex;
     flex-direction: column;
-    flex-basis: 5rem;
+    align-items: center;
     font-size: 1.5rem;
     span {
       margin-right: 0.5rem;
@@ -101,6 +103,7 @@
   .entry__rootscontainer {}
   .entry__rootscontainer__roots {
     display: flex;
+    justify-content: center;
     > * {
       margin: 0 1rem;
       padding: 0.75rem;
