@@ -53,7 +53,7 @@
   .entry__sitelenEmosi {
     display: flex;
     align-items: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
     .emoji {
       padding: 1rem;
       font-size: 2rem;
@@ -100,20 +100,27 @@
     }
   }
 
-  .entry__rootscontainer {}
-  .entry__rootscontainer__roots {
+  .entry__rootscontainer {
     display: flex;
-    justify-content: center;
-    > * {
-      margin: 0 1rem;
-      padding: 0.75rem;
-      border-radius: 0.3rem;
-      box-shadow: 0.1rem 0.1rem 0.5rem #22222299 inset;
-      font-size: 2rem;
-      width: 2rem;
-      height: 2rem;
-      line-height: 2.5rem;
-      text-align: center;
+    flex-flow: column nowrap;
+    align-items: center;
+    span {
+      font-size: 1rem;
+    }
+    .entry__rootscontainer__roots {
+      display: flex;
+      justify-content: center;
+      > * {
+        margin: 0 1rem;
+        padding: 0.75rem;
+        border-radius: 0.3rem;
+        box-shadow: 0.1rem 0.1rem 0.5rem #22222299 inset;
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+        line-height: 2.5rem;
+        text-align: center;
+      }
     }
   }
 }

@@ -5,7 +5,13 @@
   background: #eef;
   display: flex;
   flex-flow: column nowrap;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  // text-align: center;
+
+  *[lang="tp"] {
+    text-align: left;
+  }
 
   &-error {
     background: pink;

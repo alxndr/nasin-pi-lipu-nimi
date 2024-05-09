@@ -41,7 +41,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
     }
     {glyph?.lasina &&
       <div className="entry__sitelenLasina" lang="tp">
-        <span lang="tp">o ken sitelen e ona kepeken sitelen <span class="tp tp-name">INLI</span> ni</span>
+        <span lang="tp">o ken sitelen e ona kepeken toki <span lang="tp tp-name">INLI</span> la</span>
         <span className="latin">
           {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
         </span>
@@ -49,7 +49,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
     }
     {data && glyph?.lasina &&
       <div className="entry__sitelenPona" lang="tp">
-        <span lang="tp">sitelen ona li sama e nimi</span>
+        <span lang="tp">ona li sitelen pi(nimi ni) la</span>
         <span className="entry__sitelenPona__nimi">
           {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
         </span>
@@ -57,7 +57,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
     }
     {data?.sitelen_emosi &&
       <div className="entry__sitelenEmosi">
-        <span lang="tp">o ken sitelen e ona kepeken toki jelo ni</span>
+        <span lang="tp">o ken sitelen e ona kepeken sitelen <span lang="tp tp-name">EMOSI</span> la</span>
         <span className="emoji">
           {data?.sitelen_emosi}
         </span>
@@ -66,7 +66,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
    <div className="entry__definition">
      {data?.def
       ? <>
-          <span lang="tp">o ken sona e ona tan toki <span lang="tp tp-name">INLI</span> ni</span>
+          <span lang="tp">o ken sona e ona tan toki <span lang="tp tp-name">INLI</span> la</span>
           <div className="latin">
             {data?.def?.split?.(' | ALT ')[0] || glyphDefinition(glyph?.lasina)}
           </div>
@@ -74,7 +74,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
       : glyph?.lasina}
     </div>
     <div className="entry__rootscontainer">
-      <span lang="tp">o ona li wan tan ijo ni</span>
+      <span lang="tp">ona li wan tan ijo ni la</span>
       <div className="entry__rootscontainer__roots">
         {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
       </div>

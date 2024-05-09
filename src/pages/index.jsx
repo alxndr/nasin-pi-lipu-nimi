@@ -99,10 +99,15 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     <main className={filteredGlyphs.length === 0 ? 'no-glyphs-found' : ''}>
 
       <Help name="toplevel">
-        <span className="english">What is this?? <br/> <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
+        <span className="english">
+          What is this??
+          <br/>
+          <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a>
+        </span>
         <span lang="tp">
-          ilo ni li seme seme <br/>
-          o lukin e <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi</a> tan ilo ni kepeken toki <span lang="tp tp-name">INLI</span>
+          ilo ni li seme la
+          <br/>
+          o lukin e <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi</a> tan ilo ni
         </span>
       </Help>
 
@@ -116,7 +121,13 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
             ? <Help>
-                <span lang="tp" style={{textIndent:'-5em'}}>o luka e ijo ni la <br/> o lukin e poki anpa <br/> o luka e sitelen sitelen</span>
+                <span lang="tp">
+                  o luka e ijo ni la
+                  <br/>
+                  o lukin e poki anpa
+                  <br/>
+                  o luka e sitelen sitelen
+                </span>
                 <span lang="en">select a root to see all glyphs below which contain the root</span>
               </Help>
             : <>
@@ -137,11 +148,19 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
 
       {filteredGlyphs.length
         ? <Help>
-            <span lang="tp" style={{textIndent:'-5em'}}>o luka e sitelen sitelen <br/> la o lukin e toki ona</span>
+            <span lang="tp">
+              o luka e sitelen sitelen la
+              <br/>
+              o lukin e sona tan ona
+            </span>
             <span lang="en">select a glyph below to see its definition</span>
           </Help>
         : <Help name="error">
-            <span lang="tp" style={{textIndent:'-5em'}}>nimi ala la <br/> o weka e ijo</span>
+            <span lang="tp">
+              nimi ala la
+              <br/>
+              o weka e ijo
+            </span>
             <span lang="en">No glyphs found — remove a root filter by clicking the <q lang="tp">weka e ijo wan</q> button above</span>
           </Help>
       }

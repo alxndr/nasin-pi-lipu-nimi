@@ -15,14 +15,14 @@
   font-family: sp-LinjaLipamanka;
 }
 
-*[lang='tp'],
-*[lang='tp'] * {
+*[lang*='tp'],
+*[lang*='tp'] * {
   font-family: sp-LinjaLipamanka;
   line-height: 1.75em;
 }
 *[lang*='tp-name'] {
-  letter-spacing: -0.45em;
-  padding-right: 0.45em;
+  letter-spacing: -0.25em;
+  padding-right: 0.25em;
 }
 
 
@@ -148,14 +148,6 @@ ul {
       max-width: 100%;
       max-height: 100%;
     }
-  }
-
-  .error {
-    [lang="tp"] {
-      font-size: 2rem;
-      margin: 1rem;
-    }
-    text-align: center;
   }
 }
 
