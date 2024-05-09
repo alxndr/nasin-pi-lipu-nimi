@@ -101,7 +101,8 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
       <Help name="toplevel">
         <span className="english">What is this?? <br/> <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a></span>
         <span lang="tp">
-          ni li seme seme. o lukin e <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi</a> tan ilo ni kepeken toki INLI
+          ilo ni li seme seme <br/>
+          o lukin e <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi</a> tan ilo ni kepeken toki <span lang="tp tp-name">INLI</span>
         </span>
       </Help>
 
@@ -115,13 +116,13 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
         <div className={cn('rootpicker__selection', {error: !isSelectedRootsValid(selectedRoots)})}>
           {selectedRoots.length === 0
             ? <Help>
-                <span lang="tp">o luka e ijo ni la o lukin e poki anpa, o luka e sitelen suwi</span>
+                <span lang="tp" style={{textIndent:'-5em'}}>o luka e ijo ni la <br/> o lukin e poki anpa <br/> o luka e sitelen sitelen</span>
                 <span lang="en">select a root to see all glyphs below which contain the root</span>
               </Help>
             : <>
-              {selectedRoots.map(rootObj => <span class="rootpicker__selection__root" key={rootObj.name}>{rootDataToVisual(rootObj)}</span>)}
-              <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={removeLastSelectedRoot} title="remove last">weka e wan ni</button>
-              {selectedRoots.length > 1 && <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={clearSelectedRoots} title="clear all">weka e ale</button>}
+              {selectedRoots.map(rootObj => <span className="rootpicker__selection__root" key={rootObj.name}>{rootDataToVisual(rootObj)}</span>)}
+              <button lang="tp" className="rootpicker__selection__button rootpicker__selection__button-del" onClick={removeLastSelectedRoot} title="remove last">weka e ijo wan</button>
+              {selectedRoots.length > 1 && <button lang="tp" className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={clearSelectedRoots} title="clear all">weka e ijo ale</button>}
             </>
           }
         </div>
@@ -136,12 +137,12 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
 
       {filteredGlyphs.length
         ? <Help>
-            <span lang="tp">o luka e sitelen suwi la o lukin e toki ona</span>
+            <span lang="tp" style={{textIndent:'-5em'}}>o luka e sitelen sitelen <br/> la o lukin e toki ona</span>
             <span lang="en">select a glyph below to see its definition</span>
           </Help>
         : <Help name="error">
-            <span lang="tp">nimi ala la o weka e ilo ROOT</span>
-            <span lang="en">No glyphs found — remove one or more roots by clicking "weka e wan ni"</span>
+            <span lang="tp" style={{textIndent:'-5em'}}>nimi ala la <br/> o weka e ijo</span>
+            <span lang="en">No glyphs found — remove a root filter by clicking the <q lang="tp">weka e ijo wan</q> button above</span>
           </Help>
       }
       <ul className="glyphs">

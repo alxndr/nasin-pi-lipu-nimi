@@ -1,7 +1,7 @@
 .help {
   margin: 0.5em auto;
   border: 1px dotted #667;
-  padding: 0.3em 1em;
+  padding: 0.3em 0.5em;
   background: #eef;
   display: flex;
   flex-flow: column nowrap;
@@ -10,6 +10,17 @@
   &-error {
     background: pink;
     border: 2px dashed red;
+
+    q {
+      display: inline-block;
+      box-shadow: 1px 1px 3px black;
+      border-radius: 0.5em;
+
+      &::before,
+      &::after {
+        content: '';
+      }
+    }
   }
 
   &-toplevel {

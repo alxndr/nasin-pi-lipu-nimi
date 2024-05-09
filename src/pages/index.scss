@@ -18,6 +18,11 @@
 *[lang='tp'],
 *[lang='tp'] * {
   font-family: sp-LinjaLipamanka;
+  line-height: 1.75em;
+}
+*[lang*='tp-name'] {
+  letter-spacing: -0.45em;
+  padding-right: 0.45em;
 }
 
 
@@ -99,6 +104,9 @@ ul {
   align-items: center;
   justify-content: flex-start;
   padding: 0.5rem 0.7rem;
+  margin: 0 0.5em;
+  box-shadow: 1px 1px 3px black inset;
+  border-radius: 1em;
 
   .rootpicker__selection__root {
     height: 2rem;
@@ -111,7 +119,7 @@ ul {
   button {
     margin: 0.5rem;
     cursor: pointer;
-    flex-basis: 1rem;
+    flex-basis: 3rem;
   }
   img {
     max-height: 2rem;
