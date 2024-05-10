@@ -14,6 +14,13 @@ function glyphDefinition(unusualGlyphCode) {
     case '!'          : return '(an emphatic glyph!!)'
     case ','          : return '(a thought-separating glyph)'
     case ':'          : return '(a context-separating glyph)'
+    // something up with these words; def'ns not being pulled out of the csv (`data` is empty)...
+    case 'epiku'      : return 'awe / wonder; become or make epic; epic / awesome / wonderful'
+    case 'lanpan'     : return 'take / seize; catch / receive / get'
+    case 'kipisi'     : return 'part / piece / portion; separation; split / sever; cut / slice'
+    case 'meso'       : return 'midpoint, medium, mediocre; neither one not the other; neither fully is nor isn\'t'
+    case 'misekeke'   : return 'medicine / medication; pill / supplement; vaccine; cure / heal; medical / clinical'
+    case 'soko'       : return 'mushroom / fungus'
     default:
       console.debug('uh oh dunno this glyph code:', unusualGlyphCode)
       return "(sorry, we don't know this one yet...)"
@@ -41,9 +48,12 @@ const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctua
       <span className="entry__pronunciation">
         <span lang="tp">o ken toki e nimi ona la</span>
         <span lang="en">this glyph is pronounced:</span>
-        <span data-sitelen data-sitelen-ratio="0.2" className="entry__pronunciation__glyphs">
-          {glyph?.lasina.toUpperCase()}
-        </span>
+        {glyph?.lasina === 'n' /* need to special-case this because the Renderer can't handle vowel-less syllables */
+          ? <span className="juniko">nnn</span>
+          : <span data-sitelen data-sitelen-ratio="0.2" className="entry__pronunciation__glyphs">
+              {glyph?.lasina.toUpperCase()}
+            </span>
+        }
       </span>
     }
 

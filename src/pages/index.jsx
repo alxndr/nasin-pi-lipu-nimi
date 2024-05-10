@@ -217,6 +217,7 @@ export const Head = () => <>
   <script type="text/javascript" src="assets/sitelen-sitelen-renderer.min.js"></script>
 </>
 
+// some non-pu words are not being returned with data...
 export const IndexQuery = graphql`
   query {
     allRootsCsv {
