@@ -15,6 +15,7 @@ function glyphDefinition(unusualGlyphCode) {
     case ','          : return '(a thought-separating glyph)'
     case ':'          : return '(a context-separating glyph)'
     default:
+      console.debug('uh oh dunno this glyph code:', unusualGlyphCode)
       return "(sorry, we don't know this one yet...)"
   }
 }
@@ -25,12 +26,16 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
   React.useEffect(() => {
     glyph?.lasina && global.sitelenRenderer?.init?.()
   })
-  if (!glyph) return false
+  if (!glyph)
+    return false
+
   return <div className="entry">
+
     <div className="entry__sitelenSitelen">
       <span lang="tp">sina lukin e sitelen</span>
       <img className="entry__sitelenSitelen__image" src={data?.sitelen_sitelen || lasinaToGlyph(glyph)} alt={`glyph of "${glyph?.lasina}"`} />
     </div>
+
     {data && glyph?.lasina &&
       <span className="entry__pronunciation">
         <span lang="tp">o ken toki e nimi ona la</span>
@@ -39,6 +44,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
         </span>
       </span>
     }
+
     {glyph?.lasina &&
       <div className="entry__sitelenLasina" lang="tp">
         <span lang="tp">o ken sitelen e ona kepeken toki <span lang="tp tp-name">INLI</span> la</span>
@@ -47,6 +53,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
         </span>
       </div>
     }
+
     {data && glyph?.lasina &&
       <div className="entry__sitelenPona" lang="tp">
         <span lang="tp">ona li sitelen pi(nimi ni) la</span>
@@ -55,6 +62,7 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
         </span>
       </div>
     }
+
     {data?.sitelen_emosi &&
       <div className="entry__sitelenEmosi">
         <span lang="tp">o ken sitelen e ona kepeken sitelen <span lang="tp tp-name">EMOSI</span> la</span>
@@ -63,18 +71,22 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
         </span>
       </div>
     }
-   <div className="entry__definition">
+
+    <div className="entry__definition">
       <span lang="tp">o ken sona e ona tan toki <span lang="tp tp-name">INLI</span> la</span>
       <div className="latin">
         {data?.def?.split?.(' | ALT ')[0] || glyphDefinition(glyph?.lasina)}
       </div>
     </div>
+
     <div className="entry__rootscontainer">
       <span lang="tp">ona li wan tan ijo ni la</span>
       <div className="entry__rootscontainer__roots">
         {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
       </div>
     </div>
+
   </div>
 }
+
 export default EntryComponent
