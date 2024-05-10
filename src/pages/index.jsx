@@ -33,14 +33,16 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     () => definitionEdges.map(({node}) => node),
     [definitionEdges]
   )
-  const allDefinedGlyphs = React.useMemo(
-    () => glyphEdges.reduce((glyphsAccumulator, edge) => {
-      const rootsString = edge.node.roots
-      if (!rootsString.length) return glyphsAccumulator
-      const roots = rootsString.split(REGEX_WHITESPACE)
-      glyphsAccumulator.push({ lasina: edge.node.tokipona, roots, rootsAlt: edge.node.rootsAlt?.split(REGEX_WHITESPACE)})
+  const glyphEdgeReductor = (glyphsAccumulator, edge) => {
+    const rootsString = edge.node.roots
+    if (!rootsString.length)
       return glyphsAccumulator
-    }, []).sort(sortTermsByRoots),
+    const roots = rootsString.split(REGEX_WHITESPACE)
+    glyphsAccumulator.push({lasina: edge.node.tokipona, roots, rootsAlt: edge.node.rootsAlt?.split(REGEX_WHITESPACE)})
+    return glyphsAccumulator
+  }
+  const allDefinedGlyphs = React.useMemo(
+    () => glyphEdges.reduce(glyphEdgeReductor, []).sort(sortTermsByRoots),
     [glyphEdges]
   )
   console.assert(allDefinedGlyphs.length > 100, 'we should have at least a hundo glyphs here')
@@ -62,7 +64,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     () => {
       return allDefinitions.find((defEdge => defEdge.word === selectedGlyph?.lasina))
     },
-    [definitionEdges, selectedGlyph]
+    [allDefinitions, selectedGlyph]
   )
   function glyphToDictionaryEntry(glyphData) {
     return (
@@ -93,13 +95,28 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
     return () => {
       window.removeEventListener('keyup', keyupHandler)
     }
-  }, [])
+  })
+
+  const [interfaceLanguage, setInterfaceLanguage] = React.useState('tp')
+  const toggleInterfaceLanguage = () => {
+    switch (interfaceLanguage) {
+      case 'tp':
+        setInterfaceLanguage('en')
+        return
+      case 'en':
+        setInterfaceLanguage('tp')
+        return
+      default:
+        console.error('unrecognized interfaceLanguage:', interfaceLanguage)
+        return
+    }
+  }
 
   return <>
-    <main className={filteredGlyphs.length === 0 ? 'no-glyphs-found' : ''}>
+    <main lang={interfaceLanguage} className={cn({['no-glyphs-found']: filteredGlyphs.length === 0})}>
 
       <Help name="toplevel">
-        <span className="english">
+        <span lang="en">
           What is this??
           <br/>
           <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">read a blog post about it</a>
@@ -109,12 +126,19 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
           <br/>
           o lukin e <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi" target="_blank" rel="noreferrer">lipu mi</a> tan ilo ni
         </span>
+        <button className="interfaceToggle" onClick={toggleInterfaceLanguage}>
+          <span lang="tp">o ante e toki</span>
+          <span lang="en">show English text</span>
+        </button>
       </Help>
 
-      <h1 lang="tp" className="sp-ll">nasin sitelen tawa lipu pi(nimi&nbsp;ale)</h1>
+      <h1>
+        <span lang="tp">nasin sitelen tawa lipu pi(nimi&nbsp;ale)</span>
+        <span lang="en">glyph-method for the Toki Pona dictionary</span>
+      </h1>
 
       <Modal open={selectedGlyph} onClose={() => setSelectedGlyph(null)} center>
-        <Entry glyph={selectedGlyph} data={selectedDefinition} />
+        <Entry glyph={selectedGlyph} data={selectedDefinition} lang={interfaceLanguage} />
       </Modal>
 
       <div className="rootpicker">
@@ -132,8 +156,15 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
               </Help>
             : <>
               {selectedRoots.map(rootObj => <span className="rootpicker__selection__root" key={rootObj.name}>{rootDataToVisual(rootObj)}</span>)}
-              <button lang="tp" className="rootpicker__selection__button rootpicker__selection__button-del" onClick={removeLastSelectedRoot} title="remove last">weka e ijo wan</button>
-              {selectedRoots.length > 1 && <button lang="tp" className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={clearSelectedRoots} title="clear all">weka e ijo ale</button>}
+              <button className="rootpicker__selection__button rootpicker__selection__button-del" onClick={removeLastSelectedRoot} title="remove last">
+                <span lang="tp">weka e ijo wan</span>
+                <span lang="en">remove last root</span>
+              </button>
+              {selectedRoots.length > 1 &&
+                <button className="rootpicker__selection__button rootpicker__selection__button-clr" onClick={clearSelectedRoots} title="clear all">
+                  <span lang="tp">weka e ijo ale</span>
+                  <span lang="en">remove all roots</span>
+                </button>}
             </>
           }
         </div>
@@ -161,7 +192,7 @@ const IndexPage = ({data: {allRootsCsv: {edges: glyphEdges}, allDefinitionsJson:
               <br/>
               o weka e ijo
             </span>
-            <span lang="en">No glyphs found — remove a root filter by clicking the <q lang="tp">weka e ijo wan</q> button above</span>
+            <span lang="en">No glyphs found — remove a root filter by clicking the <q>remove last root</q> button above</span>
           </Help>
       }
       <ul className="glyphs">

@@ -15,14 +15,45 @@
   font-family: sp-LinjaLipamanka;
 }
 
-*[lang*='tp'],
-*[lang*='tp'] * {
+*[lang*='tp'] {
   font-family: sp-LinjaLipamanka;
   line-height: 1.75em;
 }
 *[lang*='tp-name'] {
   letter-spacing: -0.25em;
   padding-right: 0.25em;
+}
+.juniko {
+  font-family: sans-serif; // don't love having to specify like this... but the `lang` attr on `main` element means it's necessary
+}
+
+
+// language toggler
+main[lang='tp'],
+.entry[lang='tp'] {
+  *[lang*='en'] {
+    display: none;
+  }
+  .interfaceToggle > *[lang*='tp'] {
+    display: none;
+  }
+  .interfaceToggle > *[lang*='en'] {
+    display: inherit;
+  }
+}
+main[lang='en'] ,
+.entry[lang='en'] {
+  *[lang*='tp'] {
+    display: none;
+  }
+  .interfaceToggle {
+    > *[lang*='en'] {
+      display: none;
+    }
+    > *[lang*='tp'] {
+      display: inherit;
+    }
+  }
 }
 
 

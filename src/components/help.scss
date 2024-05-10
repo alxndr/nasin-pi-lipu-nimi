@@ -16,17 +16,6 @@
   &-error {
     background: pink;
     border: 2px dashed red;
-
-    q {
-      display: inline-block;
-      box-shadow: 1px 1px 3px black;
-      border-radius: 0.5em;
-
-      &::before,
-      &::after {
-        content: '';
-      }
-    }
   }
 
   &-toplevel {
@@ -38,10 +27,6 @@
     margin-top: 0;
     padding: 0.2em 0;
     text-align: center;
-    *[lang="en"],
-    .english {
-      order: 2;
-    }
   }
 
 }
