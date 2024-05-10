@@ -64,14 +64,10 @@ const EntryComponent = ({glyph, data}) => { // glyph.lasina can be punctuation o
       </div>
     }
    <div className="entry__definition">
-     {data?.def
-      ? <>
-          <span lang="tp">o ken sona e ona tan toki <span lang="tp tp-name">INLI</span> la</span>
-          <div className="latin">
-            {data?.def?.split?.(' | ALT ')[0] || glyphDefinition(glyph?.lasina)}
-          </div>
-        </>
-      : glyph?.lasina}
+      <span lang="tp">o ken sona e ona tan toki <span lang="tp tp-name">INLI</span> la</span>
+      <div className="latin">
+        {data?.def?.split?.(' | ALT ')[0] || glyphDefinition(glyph?.lasina)}
+      </div>
     </div>
     <div className="entry__rootscontainer">
       <span lang="tp">ona li wan tan ijo ni la</span>
