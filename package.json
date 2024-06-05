@@ -33,5 +33,8 @@
   },
   "devDependencies": {
     "xo": "^0.58.0"
+  },
+  "optionalDependencies": {
+    "@parcel/watcher-linux-x64-glibc": "*"
   }
 }
