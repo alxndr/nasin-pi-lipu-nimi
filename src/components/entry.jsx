@@ -44,7 +44,7 @@ const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctua
       <img className="entry__sitelenSitelen__image" src={data?.sitelen_sitelen || lasinaToGlyph(glyph)} alt={`glyph of "${glyph?.lasina}"`} />
     </div>
 
-    {data && glyph?.lasina &&
+    {glyph?.lasina &&
       <span className="entry__pronunciation">
         <span lang="tp">o ken toki e nimi ona la</span>
         <span lang="en">this glyph is pronounced:</span>
@@ -67,7 +67,7 @@ const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctua
       </div>
     }
 
-    {data && glyph?.lasina &&
+    {glyph?.lasina &&
       <div className="entry__sitelenPona" lang="tp">
         <span lang="tp">ona li sitelen pi(nimi ni) la</span>
         <span lang="en">this glyph in Sitelen Pona:</span>
