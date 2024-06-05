@@ -28,6 +28,7 @@ function glyphDefinition(unusualGlyphCode) {
 }
 
 const REGEX_NON_ALPHA = /[^a-z]/
+const REGEX_STARTS_WITH_ALPHA = /^[a-z]/
 
 const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctuation or "(usage)"
   React.useEffect(() => {
@@ -44,7 +45,7 @@ const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctua
       <img className="entry__sitelenSitelen__image" src={data?.sitelen_sitelen || lasinaToGlyph(glyph)} alt={`glyph of "${glyph?.lasina}"`} />
     </div>
 
-    {glyph?.lasina &&
+    {glyph?.lasina && REGEX_STARTS_WITH_ALPHA.test(glyph.lasina) &&
       <span className="entry__pronunciation">
         <span lang="tp">o ken toki e nimi ona la</span>
         <span lang="en">this glyph is pronounced:</span>
@@ -62,17 +63,17 @@ const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctua
         <span lang="tp">o ken sitelen e ona kepeken toki <span lang="tp tp-name">INLI</span> la</span>
         <span lang="en">this glyph is pronounced:</span>
         <span className="latin">
-          {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
+          {REGEX_NON_ALPHA.test(glyph.lasina) || glyph.lasina}
         </span>
       </div>
     }
 
-    {glyph?.lasina &&
+    {glyph?.lasina && !REGEX_NON_ALPHA.test(glyph.lasina) &&
       <div className="entry__sitelenPona" lang="tp">
         <span lang="tp">ona li sitelen pi(nimi ni) la</span>
         <span lang="en">this glyph in Sitelen Pona:</span>
         <span className="entry__sitelenPona__nimi">
-          {REGEX_NON_ALPHA.test(glyph?.lasina) || glyph?.lasina}
+          {glyph.lasina}
         </span>
       </div>
     }
