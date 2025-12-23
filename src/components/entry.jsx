@@ -97,8 +97,8 @@ const EntryComponent = ({glyph, data, lang}) => { // glyph.lasina can be punctua
     </div>
 
     <div className="entry__rootscontainer">
-      <span lang="tp">ona li wan tan ijo ni la</span>
-      <span lang="en">the roots of this glyph:</span>
+      <span lang="tp">ona li wan tan <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi#nasin-method" title="explanation of these 'roots' and how this dictionary method was developed" target="_blank">ijo</a> ni la</span>
+      <span lang="en">the <a href="https://alxndr.blog/2023/05/23/nasin-pi-lipu-nimi.html?src=nasin-pi-lipu-nimi#nasin-method" title="explanation of these 'roots' and how this dictionary method was developed" target="_blank">roots</a> of this glyph:</span>
       <div className="entry__rootscontainer__roots">
         {glyph?.roots?.map?.(rootCode => rootCodeToVisual(rootCode))}
       </div>
