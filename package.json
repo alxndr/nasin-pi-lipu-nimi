@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "classnames": "2.5.1",
-    "gatsby": "5.15.0",
+    "gatsby": "5.16.1",
     "gatsby-plugin-manifest": "^5.15",
     "gatsby-plugin-sass": "^6.15",
     "gatsby-source-filesystem": "^5.15",
